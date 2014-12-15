@@ -1,0 +1,30 @@
+{
+  "name": "hawtio-core-navigation",
+  "version": "2.0.0",
+  "main": [
+    "dist/hawtio-core-navigation.js"
+  ],
+  "ignore": [
+    ".bowerrc",
+    ".jshintrc",
+    "node_modules",
+    "libs",
+    "gulpfile.js",
+    "karma.conf.js",
+    "index.html",
+    "package.json",
+    "templates",
+    "hawtio-core-navigation.js",
+    "!dist/hawtio-core-navigation.js",
+    "hawtio-nav-example.js",
+    "test"
+  ],
+  "dependencies": {
+    "hawtio-core": "~2.0.0",
+    "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "bootstrap": "~3.3.1",
+    "patternfly": "~1.1.2"
+  }
+}
