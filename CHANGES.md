@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.3
+* Pulled out d.ts files
+
 #### 2.0.2
 * Added missing jquery.d.ts file
 
