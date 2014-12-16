@@ -24,7 +24,7 @@ module.exports = function(config) {
       'libs/hawtio-core/hawtio-core.js',
       'libs/lodash/dist/lodash.compat.js',
       // endbower
-      'dist/hawtio-nav.js',
+      'dist/hawtio-core-navigation.js',
       'test/*.js'
     ],
 
