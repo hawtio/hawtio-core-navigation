@@ -329,6 +329,76 @@ var HawtioMainNav;
   }]);
   hawtioPluginLoader.addModule(HawtioMainNav.pluginName);
 
+  // helper function for testing nav items
+  function itemIsValid(item) {
+    if (!('isValid' in item)) {
+      return true;
+    }
+    if (_.isFunction(item.isValid)) {
+      return item.isValid();
+    }
+    return false;
+  }
+
+  function addIsSelected($location, item) {
+    if (!('isSelected' in item) && 'href' in item) {
+      var href = item.href();
+      item.isSelected = function() {
+        return $location.path().startsWith(href);
+      };
+    }
+  }
+
+  function drawNavItem($templateCache, $compile, scope, element, item) {
+    if (!itemIsValid(item)) {
+      return;
+    }
+    var newScope = scope.$new();
+    newScope.item = item;
+    var template = null;
+    if (_.isFunction(item.template)) {
+      template = item.template();
+    } else {
+      template = $templateCache.get('/templates/main-nav/navItem.html');
+    }
+    element.append($compile(template)(newScope));
+  }
+
+  HawtioMainNav._module.directive('hawtioSubTabs', ['HawtioNav', '$templateCache', '$compile', '$location', '$rootScope', function(HawtioNav, $templateCache, $compile, $location, $rootScope) {
+    return {
+      restrict: 'A',
+      controller: ['$scope', function($scope) {
+        $scope.nav = HawtioNav;
+        $scope.redraw = true;
+        $scope.$watch('nav.selected()', function(selected, previous) {
+          if (selected !== previous) {
+            $scope.redraw = true;
+          }
+        });
+        $scope.$on('hawtio-nav-redraw', function() {
+          $scope.redraw = true;
+        });
+      }],
+      link: function(scope, element, attrs) {
+        scope.$watch('redraw', function(redraw) {
+          element.empty();
+          var selectedNav = HawtioNav.selected();
+          if (selectedNav.tabs) {
+            if (attrs['showHeading']) {
+              var heading = angular.extend({}, selectedNav, {
+                template: function() { return $templateCache.get('/templates/main-nav/subTabHeader.html'); }});
+                drawNavItem($templateCache, $compile, scope, element, heading);
+            }
+            selectedNav.tabs.forEach(function(item) {
+              drawNavItem($templateCache, $compile, scope, element, item);
+            });
+          }
+          scope.redraw = false;
+        });
+      }
+    };
+  }]);
+
   HawtioMainNav._module.directive("hawtioMainNav", ["HawtioNav", "$templateCache", "$compile", "$location", "$rootScope", function(HawtioNav, $templateCache, $compile, $location, $rootScope) {
     var config = {
       nav: {},
@@ -336,37 +406,19 @@ var HawtioMainNav;
       numValid: 0
     };
 
-    function itemIsValid(item) {
-      if (!('isValid' in item)) {
-        return true;
-      }
-      if (_.isFunction(item.isValid)) {
-        return item.isValid();
-      }
-      return false;
-    }
     var iterationFunc = function(item) {
       if (itemIsValid(item)) {
         config.numValid = config.numValid + 1;
       }
     };
 
-    function addIsSelected(item) {
-      if (!('isSelected' in item) && 'href' in item) {
-        var href = item.href();
-        item.isSelected = function() {
-          return $location.path().startsWith(href);
-        };
-      }
-    }
     HawtioNav.on(HawtioMainNav.Actions.ADD, 'isSelectedEnricher', function(item) {
-      addIsSelected(item);
+      addIsSelected($location, item);
       if (item.tabs) {
-        item.tabs.forEach(addIsSelected);
+        item.tabs.forEach(function(item) { addIsSelected($location, item); });
       }
     });
     HawtioNav.on(HawtioMainNav.Actions.ADD, 'PrimaryController', function(item) {
-      log.debug("Item added: ", item);
       config.nav[item.id] = item;
     });
     HawtioNav.on(HawtioMainNav.Actions.REMOVE, 'PrimaryController', function(item) {
@@ -380,7 +432,6 @@ var HawtioMainNav;
     return {
       restrict: 'A',
       replace: false,
-      template: $templateCache.get('/templates/main-nav/navbar.html'),
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
         $scope.config = config;
         $scope.redraw = true;
@@ -407,29 +458,14 @@ var HawtioMainNav;
             scope.redraw = true;
           }
           if (!scope.redraw) {
-            log.debug("not redrawing");
+            // log.debug("not redrawing");
             config.numValid = 0;
             HawtioNav.iterate(iterationFunc);
           } else {
-            log.debug("redrawing");
+            // log.debug("redrawing");
             scope.redraw = false;
             element.empty();
-
-            function drawNavItem(item) {
-                if (!itemIsValid(item)) {
-                  return;
-                }
-                var newScope = scope.$new();
-                newScope.item = item;
-                var template = null;
-                if (_.isFunction(item.template)) {
-                  template = item.template();
-                } else {
-                  template = $templateCache.get('nav.html');
-                }
-                element.append($compile(template)(newScope));
-              }
-              // first add any contextual menus (like perspectives)
+            // first add any contextual menus (like perspectives)
             HawtioNav.iterate(function(item) {
               if (!('context' in item)) {
                 return;
@@ -437,20 +473,12 @@ var HawtioMainNav;
               if (!item.context) {
                 return;
               }
-              drawNavItem(item);
+              drawNavItem($templateCache, $compile, scope, element, item);
             });
             // then add the rest of the nav items
-            HawtioNav.iterate(drawNavItem);
-          }
-          // this can change whenever, so we need to evaluate it each time
-          var selected = HawtioNav.selected();
-          log.debug("Selected item: ", selected);
-          if (selected) {
-            if (selected.tabs && selected.tabs.length > 0) {
-              element.addClass('persistent-secondary');
-            } else {
-              element.removeClass('persistent-secondary');
-            }
+            HawtioNav.iterate(function(item) {
+              drawNavItem($templateCache, $compile, scope, element, item);
+            });
           }
         });
       }
@@ -507,4 +535,5 @@ var HawtioMainNav;
 
 
 
-angular.module("hawtio-nav").run(["$templateCache", function($templateCache) {$templateCache.put("/templates/main-nav/navbar.html","<script type=\"text/ng-template\" id=\"nav.html\">\n  <li ng-class=\"{ active: item.isSelected() }\">\n    <a ng-href=\"{{item.href()}}\" ng-click=\"item.click($event)\">{{item.title()}}</a>\n    <ul ng-show=\"item.tabs\" class=\"nav navbar-nav navbar-persistent\">\n      <li ng-repeat=\"tab in item.tabs\" ng-class=\"{ active: tab.isSelected() }\">\n        <a ng-href=\"{{tab.href()}}\" ng-click=\"tab.click($event)\">{{tab.title()}}</a>\n      </li>\n    </ul>\n  </li>\n</script>\n");}]);
+angular.module("hawtio-nav").run(["$templateCache", function($templateCache) {$templateCache.put("/templates/main-nav/navItem.html","<li ng-class=\"{ active: item.isSelected() }\">\n  <a ng-href=\"{{item.href()}}\" ng-click=\"item.click($event)\">{{item.title()}}</a>\n</li>\n");
+$templateCache.put("/templates/main-nav/subTabHeader.html","<li class=\"header\">\n  <a href=\"\"><strong>{{item.title()}}</strong></a>\n</li>\n");}]);
