@@ -18,11 +18,11 @@ module.exports = function(config) {
       // bower:js
       'libs/jquery/dist/jquery.js',
       'libs/angular/angular.js',
-      'libs/angular-route/angular-route.js',
       'libs/angular-sanitize/angular-sanitize.js',
       'libs/js-logger/src/logger.js',
       'libs/hawtio-core/hawtio-core.js',
       'libs/lodash/dist/lodash.compat.js',
+      'libs/angular-route/angular-route.js',
       // endbower
       'dist/hawtio-core-navigation.js',
       'test/*.js'

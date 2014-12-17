@@ -328,6 +328,7 @@ var HawtioMainNav;
     log.debug("loaded");
   }]);
   hawtioPluginLoader.addModule(HawtioMainNav.pluginName);
+  hawtioPluginLoader.addModule("ngRoute");
 
   // helper function for testing nav items
   function itemIsValid(item) {
@@ -383,7 +384,7 @@ var HawtioMainNav;
         scope.$watch('redraw', function(redraw) {
           element.empty();
           var selectedNav = HawtioNav.selected();
-          if (selectedNav.tabs) {
+          if (selectedNav && selectedNav.tabs) {
             if (attrs['showHeading']) {
               var heading = angular.extend({}, selectedNav, {
                 template: function() { return $templateCache.get('/templates/main-nav/subTabHeader.html'); }});
