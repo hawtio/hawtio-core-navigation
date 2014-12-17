@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.5
+* Bring in angular-route
+
 #### 2.0.4
 * Separate out sub tabs into it's own directive
 
