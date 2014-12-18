@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.7
+* Fix bug where context items would be added twice
+
 #### 2.0.6
 * Add an additional example usage
 
