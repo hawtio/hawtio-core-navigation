@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.6
+* Add an additional example usage
+
 #### 2.0.5
 * Bring in angular-route
 
