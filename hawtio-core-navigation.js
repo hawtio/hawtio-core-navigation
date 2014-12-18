@@ -478,6 +478,9 @@ var HawtioMainNav;
             });
             // then add the rest of the nav items
             HawtioNav.iterate(function(item) {
+              if (item.context) {
+                return;
+              }
               drawNavItem($templateCache, $compile, scope, element, item);
             });
           }
