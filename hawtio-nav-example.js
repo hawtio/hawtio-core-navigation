@@ -8,6 +8,7 @@ var Test;
     Test._module = angular.module(Test.pluginName, []);
     var tab = null;
     var tab2 = null;
+    var tabs = [];
     Test._module.config(['$routeProvider', 'HawtioNavBuilderProvider', '$locationProvider', function ($routeProvider, builder, $locationProvider) {
         $locationProvider.html5Mode(true);
         tab = builder.create()
@@ -25,13 +26,25 @@ var Test;
                       .href(function () { return "/test2"; })
                       .page(function () { return builder.join(Test.templatePath, 'page1.html'); })
                       .build();
+
+        ['1', '2', '3', '4'].forEach(function(index) {
+          tabs.push(builder.create()
+                           .id(builder.join('test', index))
+                           .title( function() { return 'Test ' + index; })
+                           .href( function() { return '/many/' + index; })
+                           .build());
+        });
+
+
         builder.configureRouting($routeProvider, tab);
         builder.configureRouting($routeProvider, tab2);
+        $routeProvider.when('/many/:index', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
     }]);
     Test._module.run(["HawtioNav", "$timeout", function (HawtioNav, $timeout) {
         Test.log.debug('loaded');
         HawtioNav.add(tab);
         HawtioNav.add(tab2);
+        tabs.forEach(function(tab) { HawtioNav.add(tab); });
     }]);
     hawtioPluginLoader.addModule(Test.pluginName);
 })(Test || (Test = {}));

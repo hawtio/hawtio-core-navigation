@@ -59,8 +59,11 @@ gulp.task('example-clean', ['example-concat'], function() {
 });
 
 gulp.task('connect', function() {
-  plugins.watch(['hawtio-core-navigation.js', 'templates/**/*.html', 'hawtio-nav-example.js', 'test/html/*.html'], function() {
+  plugins.watch(['hawtio-core-navigation.js', 'templates/**/*.html'], function() {
     gulp.start('build');
+  });
+  plugins.watch(['hawtio-nav-example.js', 'test/html/*.html'], function() {
+    gulp.start('build-example');
   });
   plugins.watch(['index.html', 'dist/hawtio-nav-example.js', 'dist/hawtio-core-navigation.js'], function() {
     gulp.start('reload');
@@ -84,5 +87,6 @@ gulp.task('reload', function() {
     .pipe(plugins.connect.reload());
 });
 
-gulp.task('build', ['templates', 'concat', 'clean', 'example-templates', 'example-concat', 'example-clean']);
-gulp.task('default', ['build', 'connect', 'test']);
+gulp.task('build', ['templates', 'concat', 'clean']);
+gulp.task('build-example', ['example-templates', 'example-concat', 'example-clean']);
+gulp.task('default', ['build', 'build-example', 'connect', 'test']);
