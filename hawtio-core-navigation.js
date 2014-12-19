@@ -129,7 +129,7 @@ var HawtioMainNav;
       switch (action) {
         case HawtioMainNav.Actions.ADD:
           this.root.addEventListener(HawtioMainNav.Actions.ADD, function(event) {
-            //console.log("event key: ", key, " event: ", event);
+            //log.debug("event key: ", key, " event: ", event);
             fn(event.detail.item);
           });
           if (this.items.length > 0) {
@@ -144,13 +144,13 @@ var HawtioMainNav;
           break;
         case HawtioMainNav.Actions.REMOVE:
           this.root.addEventListener(HawtioMainNav.Actions.REMOVE, function(event) {
-            //console.log("event key: ", key, " event: ", event);
+            //log.debug("event key: ", key, " event: ", event);
             fn(event.detail.item);
           });
           break;
         case HawtioMainNav.Actions.CHANGED:
           this.root.addEventListener(HawtioMainNav.Actions.CHANGED, function(event) {
-            //console.log("event key: ", key, " event: ", event);
+            //log.debug("event key: ", key, " event: ", event);
             fn(event.detail.items);
           });
           if (this.items.length > 0) {
@@ -163,11 +163,12 @@ var HawtioMainNav;
           break;
         case HawtioMainNav.Actions.REDRAW:
           this.root.addEventListener(HawtioMainNav.Actions.REDRAW, function(event) {
+            //log.debug("event key: ", key, " event: ", event);
             fn(event);
           });
           var event = new CustomEvent(HawtioMainNav.Actions.REDRAW, {
             detail: {
-              text: 'foo'
+              text: ''
             }
           });
           this.root.dispatchEvent(event);
@@ -178,6 +179,7 @@ var HawtioMainNav;
     return RegistryImpl;
   })();
 
+  // Factory for registry, used to create angular service
   function createRegistry(root) {
     return new RegistryImpl(root);
   }
@@ -302,6 +304,7 @@ var HawtioMainNav;
     return new HawtioMainNav.NavItemBuilderImpl();
   };
 
+  // Plugin initialization
   HawtioMainNav._module = angular.module(HawtioMainNav.pluginName, []);
 
   HawtioMainNav._module.run(['HawtioNav', '$rootScope', function(HawtioNav, $rootScope) {
@@ -531,10 +534,35 @@ var HawtioMainNav;
       }
     };
   }]);
+
+  HawtioMainNav._module.factory('HawtioPerspective', [function() {
+    var log = Logger.get('hawtio-dummy-perspective');
+    return {
+      add: function(id, perspective) {
+        log.debug("add called for id: ", id);
+      },
+      remove: function(id) {
+        log.debug("remove called for id: ", id);
+        return undefined;
+      },
+      setCurrent: function(id) {
+        log.debug("setCurrent called for id: ", id);
+      },
+      getCurrent: function(id) {
+        log.debug("getCurrent called for id: ", id);
+        return undefined;
+      },
+      getLabels: function() {
+        return [];
+      }
+    };
+  }]);
+
   HawtioMainNav._module.factory('HawtioNav', ['$window', '$rootScope', function($window, $rootScope) {
     var registry = HawtioMainNav.createRegistry(window);
     return registry;
   }]);
+
 })(HawtioMainNav || (HawtioMainNav = {}));
 
 

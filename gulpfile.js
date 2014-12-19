@@ -58,13 +58,16 @@ gulp.task('example-clean', ['example-concat'], function() {
     .pipe(plugins.clean());
 });
 
-gulp.task('connect', function() {
+gulp.task('watch', function() {
   plugins.watch(['hawtio-core-navigation.js', 'templates/**/*.html'], function() {
     gulp.start('build');
   });
   plugins.watch(['hawtio-nav-example.js', 'test/html/*.html'], function() {
     gulp.start('build-example');
   });
+});
+
+gulp.task('connect', function() {
   plugins.watch(['index.html', 'dist/hawtio-nav-example.js', 'dist/hawtio-core-navigation.js'], function() {
     gulp.start('reload');
   });
@@ -89,4 +92,4 @@ gulp.task('reload', function() {
 
 gulp.task('build', ['templates', 'concat', 'clean']);
 gulp.task('build-example', ['example-templates', 'example-concat', 'example-clean']);
-gulp.task('default', ['build', 'build-example', 'connect', 'test']);
+gulp.task('default', ['build', 'build-example', 'watch', 'connect', 'test']);
