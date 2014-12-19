@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.8
+* Add HawtioPerspective service do-nothing implementation
+
 #### 2.0.7
 * Fix bug where context items would be added twice
 
