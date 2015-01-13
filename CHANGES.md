@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.9
+* Add view controller and layoutFull template
+
 #### 2.0.8
 * Add HawtioPerspective service do-nothing implementation
 
