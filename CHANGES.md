@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.10
+* Adjust template paths so they're relative
+
 #### 2.0.9
 * Add view controller and layoutFull template
 
