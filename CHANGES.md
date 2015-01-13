@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.11
+* Just consider keys in view registry as regexs
+
 #### 2.0.10
 * Adjust template paths so they're relative
 
