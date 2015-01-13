@@ -17,10 +17,10 @@ gulp.task('bower', function() {
 });
 
 gulp.task('templates', function() {
-  return gulp.src('./templates/**/*.html')
+  return gulp.src(['./templates/**/*.html'])
     .pipe(plugins.angularTemplatecache({
       filename: 'templates.js',
-      root: '/templates/',
+      root: 'templates/',
       module: 'hawtio-nav'
     }))
     .pipe(gulp.dest('.'));

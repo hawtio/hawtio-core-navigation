@@ -308,7 +308,7 @@ var HawtioMainNav;
   var _module = angular.module(HawtioMainNav.pluginName, []);
   HawtioMainNav._module = _module;
 
-  _module.constant('layoutFull', 'templates/layoutFull.html');
+  _module.constant('layoutFull', 'templates/main-nav/layoutFull.html');
 
   _module.controller('HawtioNav.ViewController', ['$scope', '$route', '$location', 'layoutFull', 'viewRegistry', function($scope, $route, $location, layoutFull, viewRegistry) {
 
@@ -426,7 +426,7 @@ var HawtioMainNav;
     if (_.isFunction(item.template)) {
       template = item.template();
     } else {
-      template = $templateCache.get('/templates/main-nav/navItem.html');
+      template = $templateCache.get('templates/main-nav/navItem.html');
     }
     element.append($compile(template)(newScope));
   }
@@ -453,7 +453,7 @@ var HawtioMainNav;
           if (selectedNav && selectedNav.tabs) {
             if (attrs['showHeading']) {
               var heading = angular.extend({}, selectedNav, {
-                template: function() { return $templateCache.get('/templates/main-nav/subTabHeader.html'); }});
+                template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
                 drawNavItem($templateCache, $compile, scope, element, heading);
             }
             selectedNav.tabs.forEach(function(item) {
