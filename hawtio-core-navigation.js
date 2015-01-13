@@ -305,9 +305,72 @@ var HawtioMainNav;
   };
 
   // Plugin initialization
-  HawtioMainNav._module = angular.module(HawtioMainNav.pluginName, []);
+  var _module = angular.module(HawtioMainNav.pluginName, []);
+  HawtioMainNav._module = _module;
 
-  HawtioMainNav._module.run(['HawtioNav', '$rootScope', function(HawtioNav, $rootScope) {
+  _module.constant('layoutFull', 'templates/layoutFull.html');
+
+  _module.controller('HawtioNav.ViewController', ['$scope', '$route', '$location', 'layoutFull', 'viewRegistry', function($scope, $route, $location, layoutFull, viewRegistry) {
+
+    findViewPartial();
+
+    $scope.$on("$routeChangeSuccess", function (event, current, previous) {
+      findViewPartial();
+    });
+
+    function searchRegistry(path) {
+      var answer = undefined;
+      _.forIn(viewRegistry, function (value, key) {
+        if (!answer) {
+          if (key.startsWith("/") && key.endsWith("/")) {
+            // assume its a regex
+            var text = key.substring(1, key.length - 1);
+            try {
+              var reg = new RegExp(text, "");
+              if (reg.exec(path)) {
+                answer = value;
+              }
+            } catch (e) {
+              log.debug("Invalid RegExp " + text + " for viewRegistry value: " + value);
+            }
+          } else {
+            if (path.startsWith(key)) {
+              answer = value;
+            }
+          }
+        }
+      });
+      // log.debug("Searching for: " + path + " returning: ", answer);
+      return answer;
+    }
+
+    function findViewPartial() {
+      var answer = null;
+      var hash = $location.search();
+      var tab = hash['tab'];
+      if (angular.isString(tab)) {
+        answer = searchRegistry(tab);
+      }
+      if (!answer) {
+        var path = $location.path();
+        if (path) {
+          if (path.startsWith("/")) {
+            path = path.substring(1);
+          }
+          answer = searchRegistry(path);
+        }
+      }
+      if (!answer) {
+        answer = layoutFull;
+      }
+      $scope.viewPartial = answer;
+
+      log.debug("Using view partial: " + answer);
+      return answer;
+    }
+  }]);
+
+  _module.run(['HawtioNav', '$rootScope', function(HawtioNav, $rootScope) {
     HawtioNav.on(HawtioMainNav.Actions.CHANGED, "$apply", function(item) {
       if(!$rootScope.$$phase) {
         $rootScope.$apply();
