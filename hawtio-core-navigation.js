@@ -322,25 +322,16 @@ var HawtioMainNav;
       var answer = undefined;
       _.forIn(viewRegistry, function (value, key) {
         if (!answer) {
-          if (key.startsWith("/") && key.endsWith("/")) {
-            // assume its a regex
-            var text = key.substring(1, key.length - 1);
-            try {
-              var reg = new RegExp(text, "");
-              if (reg.exec(path)) {
-                answer = value;
-              }
-            } catch (e) {
-              log.debug("Invalid RegExp " + text + " for viewRegistry value: " + value);
-            }
-          } else {
-            if (path.startsWith(key)) {
+          try {
+            var reg = new RegExp(key, "");
+            if (reg.exec(path)) {
               answer = value;
             }
+          } catch (e) {
+            log.debug("Invalid RegExp " + text + " for viewRegistry value: " + value);
           }
         }
       });
-      // log.debug("Searching for: " + path + " returning: ", answer);
       return answer;
     }
 
@@ -354,9 +345,6 @@ var HawtioMainNav;
       if (!answer) {
         var path = $location.path();
         if (path) {
-          if (path.startsWith("/")) {
-            path = path.substring(1);
-          }
           answer = searchRegistry(path);
         }
       }
