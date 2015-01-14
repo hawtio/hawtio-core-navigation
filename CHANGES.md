@@ -1,5 +1,8 @@
 ### Change Log
 
+#### 2.0.12
+* Fix bug in selection function
+
 #### 2.0.11
 * Just consider keys in view registry as regexs
 

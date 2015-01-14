@@ -399,7 +399,7 @@ var HawtioMainNav;
     if (!('isSelected' in item) && 'href' in item) {
       var href = item.href();
       item.isSelected = function() {
-        return $location.path().startsWith(href);
+        return $location.path().indexOf(href) === 0;
       };
     }
   }
