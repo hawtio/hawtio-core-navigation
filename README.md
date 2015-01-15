@@ -30,4 +30,4 @@ A core plugin that provides the main navigation bar and an API to manipulate the
   hawtioPluginLoader.addModule("MyAwesomePlugin");
 ```
 
-see index.html and hawtio-nav-example.js for more detail.
+see [index.html](https://github.com/hawtio/hawtio-core-navigation/blob/master/index.html) and [hawtio-nav-example.js](https://github.com/hawtio/hawtio-core-navigation/blob/master/hawtio-nav-example.js) for more detail.
