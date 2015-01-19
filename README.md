@@ -30,4 +30,36 @@ A core plugin that provides the main navigation bar and an API to manipulate the
   hawtioPluginLoader.addModule("MyAwesomePlugin");
 ```
 
+* You can also configure your routes separately for more control and configure the tabs in your module's run method:
+
+```
+  var module = angular.module("MyAwesomePlugin", []);
+  // configure routing...
+  module.config(['$routeProvider', function($routeProvider) {
+    /// snip
+  }]);
+
+  module.run(["HawtioNav", function(HawtioNav) {
+    // get a builder object to create nav objects
+    var builder = HawtioNav.builder();
+
+    // Create a subtab
+    var subTab = builder.id('fooSubTab')
+                        .href(function() { return '/foo/bar'; })
+                        .title(function() { return 'My Sub Tab'; })
+                        .build();
+
+    // Create a top-level tab
+    var tab = builder.id('foo')
+                     .href(function() { return '/foo'; })
+                     .isValid(function() { return true; })
+                     .title(function() { return 'My Tab'; })
+                     .tabs(subTab);
+                     .build();
+
+    // Add to the nav bar
+    HawtioNav.add(tab);
+  }]);
+```
+
 see [index.html](https://github.com/hawtio/hawtio-core-navigation/blob/master/index.html) and [hawtio-nav-example.js](https://github.com/hawtio/hawtio-core-navigation/blob/master/hawtio-nav-example.js) for more detail.
