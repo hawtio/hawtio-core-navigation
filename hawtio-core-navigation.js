@@ -265,9 +265,7 @@ var HawtioMainNav;
       return this;
     };
     NavItemBuilderImpl.prototype.subPath = function(title, path, page, reload, isValid) {
-      var _this = this;
-      var parentHref = this.self.href();
-      var href = NavItemBuilderImpl.join(parentHref, path);
+      var parent = this.self;
       if (!this.self.tabs) {
         this.self.tabs = [];
       }
@@ -277,7 +275,10 @@ var HawtioMainNav;
           return title;
         },
         href: function() {
-          return href;
+          if (parent.href) {
+            return NavItemBuilderImpl.join(parent.href(), path);
+          }
+          return path;
         }
       };
       if (!_.isUndefined(page)) {
@@ -403,9 +404,8 @@ var HawtioMainNav;
 
   function addIsSelected($location, item) {
     if (!('isSelected' in item) && 'href' in item) {
-      var href = item.href();
       item.isSelected = function() {
-        return $location.path().indexOf(href) === 0;
+        return $location.path() === item.href() || $location.path().indexOf(item.href() + '/') === 0;
       };
     }
   }

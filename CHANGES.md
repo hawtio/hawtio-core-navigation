@@ -1,5 +1,9 @@
 ### Change Log
 
+#### 2.0.15
+* Ensure we don't cache tab href values
+* Improve URL matching
+
 #### 2.0.14
 * Add example usage of configuring routes separately from the nav bar
 * Fix a couple issues around sub-tabs

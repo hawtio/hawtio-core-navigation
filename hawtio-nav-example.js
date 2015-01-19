@@ -53,15 +53,20 @@ var Test;
 
         var builder = HawtioNav.builder();
 
-        var subTab = builder.id('fooSubTab')
+        var subTab1 = builder.id('fooSubTab')
                             .href(function() { return '/foo/bar'; })
-                            .title(function() { return 'My Sub Tab'; })
+                            .title(function() { return 'My Sub Tab 2'; })
+                            .build();
+
+        var subTab2 = builder.id('fooSubTab')
+                            .href(function() { return '/foo/barBaz'; })
+                            .title(function() { return 'My Sub Tab 2'; })
                             .build();
 
         var tab3 = builder.id('foo')
                           .href(function() { return '/foo'; })
                           .title(function() { return 'My Tab'; })
-                          .tabs(subTab)
+                          .tabs(subTab1, subTab2)
                           .build();
         
         HawtioNav.add(tab3);
