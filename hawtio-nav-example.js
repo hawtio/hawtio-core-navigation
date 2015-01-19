@@ -35,16 +35,40 @@ var Test;
                            .build());
         });
 
+        console.log("Tabs:", tabs);
+
 
         builder.configureRouting($routeProvider, tab);
         builder.configureRouting($routeProvider, tab2);
         $routeProvider.when('/many/:index', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
+
+        // Manually configured route
+        $routeProvider.when('/foo/bar', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
     }]);
-    Test._module.run(["HawtioNav", "$timeout", function (HawtioNav, $timeout) {
+    Test._module.run(["HawtioNav", function (HawtioNav) {
         Test.log.debug('loaded');
         HawtioNav.add(tab);
         HawtioNav.add(tab2);
         tabs.forEach(function(tab) { HawtioNav.add(tab); });
+
+        var builder = HawtioNav.builder();
+
+        var subTab = builder.id('fooSubTab')
+                            .href(function() { return '/foo/bar'; })
+                            .title(function() { return 'My Sub Tab'; })
+                            .build();
+
+        var tab3 = builder.id('foo')
+                          .href(function() { return '/foo'; })
+                          .title(function() { return 'My Tab'; })
+                          .tabs(subTab)
+                          .build();
+        
+        HawtioNav.add(tab3);
+
+
+        
+
     }]);
     hawtioPluginLoader.addModule(Test.pluginName);
 })(Test || (Test = {}));

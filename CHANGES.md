@@ -1,5 +1,9 @@
 ### Change Log
 
+#### 2.0.14
+* Add example usage of configuring routes separately from the nav bar
+* Fix a couple issues around sub-tabs
+
 #### 2.0.13
 * Fudged rebuild
 

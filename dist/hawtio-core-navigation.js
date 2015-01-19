@@ -266,6 +266,8 @@ var HawtioMainNav;
     };
     NavItemBuilderImpl.prototype.subPath = function(title, path, page, reload, isValid) {
       var _this = this;
+      var parentHref = this.self.href();
+      var href = NavItemBuilderImpl.join(parentHref, path);
       if (!this.self.tabs) {
         this.self.tabs = [];
       }
@@ -275,7 +277,7 @@ var HawtioMainNav;
           return title;
         },
         href: function() {
-          return NavItemBuilderImpl.join(_this.self.href(), path);
+          return href;
         }
       };
       if (!_.isUndefined(page)) {
@@ -293,7 +295,11 @@ var HawtioMainNav;
       return this;
     };
     NavItemBuilderImpl.prototype.build = function() {
-      return this.self;
+      var answer = _.cloneDeep(this.self);
+      this.self = {
+        id: ''
+      };
+      return answer;
     };
     return NavItemBuilderImpl;
   })();
