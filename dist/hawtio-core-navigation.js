@@ -365,7 +365,7 @@ var HawtioMainNav;
     }
   }]);
 
-  _module.run(['HawtioNav', '$rootScope', function(HawtioNav, $rootScope) {
+  _module.run(['HawtioNav', '$rootScope', '$route', function(HawtioNav, $rootScope, $route) {
     HawtioNav.on(HawtioMainNav.Actions.CHANGED, "$apply", function(item) {
       if(!$rootScope.$$phase) {
         $rootScope.$apply();
@@ -386,6 +386,7 @@ var HawtioMainNav;
         }
       };
     });
+    $route.reload();
     log.debug("loaded");
   }]);
   hawtioPluginLoader.addModule(HawtioMainNav.pluginName);
