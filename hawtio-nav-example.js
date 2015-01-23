@@ -45,31 +45,33 @@ var Test;
         // Manually configured route
         $routeProvider.when('/foo/bar', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
     }]);
-    Test._module.run(["HawtioNav", function (HawtioNav) {
-        Test.log.debug('loaded');
-        HawtioNav.add(tab);
-        HawtioNav.add(tab2);
-        tabs.forEach(function(tab) { HawtioNav.add(tab); });
+    Test._module.run(["viewRegistry", "HawtioNav", function (viewRegistry, HawtioNav) {
 
-        var builder = HawtioNav.builder();
+      viewRegistry['foo'] = 'templates/main-nav/layoutTest.html';
+      Test.log.debug('loaded');
+      HawtioNav.add(tab);
+      HawtioNav.add(tab2);
+      tabs.forEach(function(tab) { HawtioNav.add(tab); });
 
-        var subTab1 = builder.id('fooSubTab')
-                            .href(function() { return '/foo/bar'; })
-                            .title(function() { return 'My Sub Tab 2'; })
-                            .build();
+      var builder = HawtioNav.builder();
 
-        var subTab2 = builder.id('fooSubTab')
-                            .href(function() { return '/foo/barBaz'; })
-                            .title(function() { return 'My Sub Tab 2'; })
-                            .build();
-
-        var tab3 = builder.id('foo')
-                          .href(function() { return '/foo'; })
-                          .title(function() { return 'My Tab'; })
-                          .tabs(subTab1, subTab2)
+      var subTab1 = builder.id('fooSubTab')
+                          .href(function() { return '/foo/bar'; })
+                          .title(function() { return 'My Sub Tab 2'; })
                           .build();
-        
-        HawtioNav.add(tab3);
+
+      var subTab2 = builder.id('fooSubTab')
+                          .href(function() { return '/foo/barBaz'; })
+                          .title(function() { return 'My Sub Tab 2'; })
+                          .build();
+
+      var tab3 = builder.id('foo')
+                        .href(function() { return '/foo'; })
+                        .title(function() { return 'My Tab'; })
+                        .tabs(subTab1, subTab2)
+                        .build();
+      
+      HawtioNav.add(tab3);
 
 
         

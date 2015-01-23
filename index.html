@@ -2,8 +2,9 @@
 <html>
 
   <head>
-    <title>hawtio nav test</title>
+    <title>hawtio-core-navigation</title>
     <base href='/'></base>
+    <meta charset="UTF8">
 
 
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css" />
@@ -32,17 +33,27 @@
     <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
     <script src="libs/patternfly/dist/js/patternfly.js"></script>
 
+    <style>
+      body {
+        padding-top: 70px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    </style>
+
   </head>
 
   <body>
-    <nav class="navbar navbar-default navbar-pf" role="navigation">
+  <nav class="navbar navbar-fixed-top navbar-default navbar-pf" role="navigation">
+    <div class="container-fluid">
       <ul class="nav navbar-nav navbar-primary" hawtio-main-nav></ul>
-      <ul class="nav navbar-nav" hawtio-sub-tabs show-heading="true"></ul>
-    </nav>
-
-    <div id="main" class="container-fluid ng-cloak" ng-controller="HawtioNav.ViewController">
-      <div ng-include src="viewPartial"></div>
+      <ul class="nav navbar-nav" hawtio-sub-tabs></ul>
     </div>
+  </nav>
+
+  <div id="main" class="container-fluid ng-cloak" ng-controller="HawtioNav.ViewController">
+    <div ng-include src="viewPartial"></div>
+  </div>
 
     <script src="dist/hawtio-core-navigation.js"></script>
     <script src="dist/hawtio-nav-example.js"></script>
