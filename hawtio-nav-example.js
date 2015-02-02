@@ -49,6 +49,13 @@ var Test;
 
       viewRegistry['foo'] = 'templates/main-nav/layoutTest.html';
       Test.log.debug('loaded');
+      tab.tabs.push({
+        id: 'test',
+        title: function() { return 'you should not see me!'; },
+        href: function() { return '/foo' },
+        isValid: function() { return true; },
+        show: function() { return false; }
+      });
       HawtioNav.add(tab);
       HawtioNav.add(tab2);
       tabs.forEach(function(tab) { HawtioNav.add(tab); });
