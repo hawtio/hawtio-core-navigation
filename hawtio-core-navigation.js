@@ -252,6 +252,10 @@ var HawtioMainNav;
       this.self.isValid = isValid;
       return this;
     };
+    NavItemBuilderImpl.prototype.show = function(show) {
+      this.self.show = show;
+      return this;
+    };
     NavItemBuilderImpl.prototype.template = function(template) {
       this.self.template = template;
       return this;

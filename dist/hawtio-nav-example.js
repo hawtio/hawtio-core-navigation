@@ -65,6 +65,7 @@ var Test;
       var subTab1 = builder.id('fooSubTab')
                           .href(function() { return '/foo/bar'; })
                           .title(function() { return 'My Sub Tab 2'; })
+                          .show(function () { return true; })
                           .build();
 
       var subTab2 = builder.id('fooSubTab')
