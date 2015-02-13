@@ -43,7 +43,9 @@ var Test;
         $routeProvider.when('/many/:index', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
 
         // Manually configured route
+        $routeProvider.when('/foo', { redirectTo: '/foo/bar' });
         $routeProvider.when('/foo/bar', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
+        $routeProvider.when('/foo/barBaz', { templateUrl: builder.join(Test.templatePath, 'page2.html') });
     }]);
     Test._module.run(["viewRegistry", "HawtioNav", function (viewRegistry, HawtioNav) {
 

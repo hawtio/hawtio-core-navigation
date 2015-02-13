@@ -462,6 +462,7 @@ var HawtioMainNav;
       return;
     }
     var newScope = scope.$new();
+    item.hide = function() { return item.show && !item.show(); };
     newScope.item = item;
     var template = null;
     if (_.isFunction(item.template)) {

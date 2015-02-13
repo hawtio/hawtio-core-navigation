@@ -1,3 +1,3 @@
-<li ng-class="{ active: item.isSelected() }" ng-hide="item.show && !item.show()">
+<li ng-class="{ active: item.isSelected() }" ng-hide="item.hide()">
   <a ng-href="{{item.href()}}" ng-click="item.click($event)" ng-bind-html="item.title()"></a>
 </li>
