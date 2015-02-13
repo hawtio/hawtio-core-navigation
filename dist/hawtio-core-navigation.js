@@ -316,10 +316,52 @@ var HawtioMainNav;
   };
 
   // Plugin initialization
-  var _module = angular.module(HawtioMainNav.pluginName, []);
+  var _module = angular.module(HawtioMainNav.pluginName, ['ngRoute']);
   HawtioMainNav._module = _module;
 
   _module.constant('layoutFull', 'templates/main-nav/layoutFull.html');
+
+  _module.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.otherwise({ templateUrl: 'templates/main-nav/welcome.html' });
+  }]);
+
+  _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', function($scope, $location, welcome, nav, $timeout) {
+
+    function gotoFirstAvailableNav() {
+      var found = false;
+      nav.iterate(function(item) {
+        if (found) {
+          return;
+        }
+        var isValid = item.isValid || function() { return true; };
+        var show = item.show || function() { return true; };
+        if (isValid() && show()) {
+          found = true;
+          $location.url(item.href());
+        }
+      });
+    }
+
+    $timeout(function() {
+      if (welcome.pages.length === 0) {
+        gotoFirstAvailableNav();
+      }
+      var sortedPages = _.sortBy(welcome.pages, function(page) { return page.rank; });
+      var page = _.find(sortedPages, function(page) {
+        if ('isValid' in page) {
+          return page.isValid();
+        }
+        return true;
+      });
+      if (page) {
+        $location.url(page.href());
+      } else {
+        gotoFirstAvailableNav();
+      }
+    }, 500);
+
+
+  }]);
 
   _module.controller('HawtioNav.ViewController', ['$scope', '$route', '$location', 'layoutFull', 'viewRegistry', function($scope, $route, $location, layoutFull, viewRegistry) {
 
@@ -620,6 +662,12 @@ var HawtioMainNav;
     };
   }]);
 
+  HawtioMainNav._module.factory('WelcomePageRegistry', [function() {
+    return {
+      pages: []
+    };
+  }]);
+
   HawtioMainNav._module.factory('HawtioNav', ['$window', '$rootScope', function($window, $rootScope) {
     var registry = HawtioMainNav.createRegistry(window);
     return registry;
@@ -632,4 +680,5 @@ var HawtioMainNav;
 angular.module("hawtio-nav").run(["$templateCache", function($templateCache) {$templateCache.put("templates/main-nav/layoutFull.html","<div ng-view></div>\n\n\n");
 $templateCache.put("templates/main-nav/layoutTest.html","<div>\n  <h1>Test Layout</h1>\n  <div ng-view>\n\n\n  </div>\n</div>\n\n\n");
 $templateCache.put("templates/main-nav/navItem.html","<li ng-class=\"{ active: item.isSelected() }\" ng-hide=\"item.show && !item.show()\">\n  <a ng-href=\"{{item.href()}}\" ng-click=\"item.click($event)\" ng-bind-html=\"item.title()\"></a>\n</li>\n");
-$templateCache.put("templates/main-nav/subTabHeader.html","<li class=\"header\">\n  <a href=\"\"><strong>{{item.title()}}</strong></a>\n</li>\n");}]);
+$templateCache.put("templates/main-nav/subTabHeader.html","<li class=\"header\">\n  <a href=\"\"><strong>{{item.title()}}</strong></a>\n</li>\n");
+$templateCache.put("templates/main-nav/welcome.html","<div ng-controller=\"HawtioNav.WelcomeController\"></div>\n");}]);

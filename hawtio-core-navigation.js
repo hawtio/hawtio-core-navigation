@@ -316,10 +316,52 @@ var HawtioMainNav;
   };
 
   // Plugin initialization
-  var _module = angular.module(HawtioMainNav.pluginName, []);
+  var _module = angular.module(HawtioMainNav.pluginName, ['ngRoute']);
   HawtioMainNav._module = _module;
 
   _module.constant('layoutFull', 'templates/main-nav/layoutFull.html');
+
+  _module.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.otherwise({ templateUrl: 'templates/main-nav/welcome.html' });
+  }]);
+
+  _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', function($scope, $location, welcome, nav, $timeout) {
+
+    function gotoFirstAvailableNav() {
+      var found = false;
+      nav.iterate(function(item) {
+        if (found) {
+          return;
+        }
+        var isValid = item.isValid || function() { return true; };
+        var show = item.show || function() { return true; };
+        if (isValid() && show()) {
+          found = true;
+          $location.url(item.href());
+        }
+      });
+    }
+
+    $timeout(function() {
+      if (welcome.pages.length === 0) {
+        gotoFirstAvailableNav();
+      }
+      var sortedPages = _.sortBy(welcome.pages, function(page) { return page.rank; });
+      var page = _.find(sortedPages, function(page) {
+        if ('isValid' in page) {
+          return page.isValid();
+        }
+        return true;
+      });
+      if (page) {
+        $location.url(page.href());
+      } else {
+        gotoFirstAvailableNav();
+      }
+    }, 500);
+
+
+  }]);
 
   _module.controller('HawtioNav.ViewController', ['$scope', '$route', '$location', 'layoutFull', 'viewRegistry', function($scope, $route, $location, layoutFull, viewRegistry) {
 
@@ -617,6 +659,12 @@ var HawtioMainNav;
       getLabels: function() {
         return [];
       }
+    };
+  }]);
+
+  HawtioMainNav._module.factory('WelcomePageRegistry', [function() {
+    return {
+      pages: []
     };
   }]);
 
