@@ -276,7 +276,8 @@ var HawtioMainNav;
       this.self.tabs = _.union(this.self.tabs, [item], items);
       return this;
     };
-    NavItemBuilderImpl.prototype.subPath = function(title, path, page, reload, isValid) {
+    NavItemBuilderImpl.prototype.subPath = function(title, path, page, rank, reload, isValid) {
+
       var parent = this.self;
       if (!this.self.tabs) {
         this.self.tabs = [];
@@ -297,6 +298,9 @@ var HawtioMainNav;
         tab.page = function() {
           return page;
         };
+      }
+      if (!_.isUndefined(rank)) {
+        tab.rank = rank;
       }
       if (!_.isUndefined(reload)) {
         tab.reload = reload;
@@ -607,7 +611,8 @@ var HawtioMainNav;
                 template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
                 drawNavItem($templateCache, $compile, scope, element, heading);
             }
-            selectedNav.tabs.forEach(function(item) {
+            var rankedTabs = sortByRank(selectedNav.tabs);
+            rankedTabs.forEach(function(item) {
               drawNavItem($templateCache, $compile, scope, element, item);
             });
           }

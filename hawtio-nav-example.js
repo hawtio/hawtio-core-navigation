@@ -16,9 +16,9 @@ var Test;
                      .title(function () { return "Test"; })
                      .rank(10)
                      .href(function () { return "/test1"; })
-                     .subPath("Sub Page 1", "page1", builder.join(Test.templatePath, 'page1.html'))
-                     .subPath("Sub Page 2", "page2", builder.join(Test.templatePath, 'page2.html'))
-                     .subPath("Sub Page 3", "page3", builder.join(Test.templatePath, 'page3.html'))
+                     .subPath("Sub Page 1", "page1", builder.join(Test.templatePath, 'page1.html'), 1)
+                     .subPath("Sub Page 2", "page2", builder.join(Test.templatePath, 'page2.html'), 4)
+                     .subPath("Sub Page 3", "page3", builder.join(Test.templatePath, 'page3.html'), 2)
                      .build();
 
         tab2 = builder.create()
