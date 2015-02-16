@@ -220,6 +220,10 @@ var HawtioMainNav;
       this.self.id = id;
       return this;
     };
+    NavItemBuilderImpl.prototype.rank = function(rank) {
+      this.self.rank = rank;
+      return this;
+    };
     NavItemBuilderImpl.prototype.title = function(title) {
       this.self.title = title;
       return this;
@@ -334,7 +338,7 @@ var HawtioMainNav;
     function gotoNavItem(item) {
       var uri = new URI(item.href());
       var search = _.merge($location.search(), uri.query(true));
-      log.debug("Would go to item id: ", item.id, " href: ", uri.path(), " query: ", search);
+      log.debug("Going to item id: ", item.id, " href: ", uri.path(), " query: ", search);
       $timeout(function() {
         $location.path(uri.path()).search(search);
       }, 10);
@@ -342,17 +346,16 @@ var HawtioMainNav;
 
     function gotoFirstAvailableNav() {
       var found = false;
+      var candidates = [];
       nav.iterate(function(item) {
-        if (found) {
-          return;
-        }
         var isValid = item.isValid || function() { return true; };
         var show = item.show || function() { return true; };
         if (isValid() && show()) {
-          found = true;
-          gotoNavItem(item);
+          candidates.push(item);
         }
       });
+      var rankedCandidates = sortByRank(candidates);
+      gotoNavItem(rankedCandidates[0]);
     }
 
     $timeout(function() {
@@ -371,24 +374,29 @@ var HawtioMainNav;
         }
       }
       var candidates = [];
-      var highestRank = 0;
       nav.iterate(function(item) {
         if ('defaultPage' in item) {
           var page = item.defaultPage;
           if (!('rank' in page)) {
             candidates.push(item);
+            return;
           }
-          if (page.rank > highestRank) {
-            candidates.splice(0, 0, item);
-            highestRank = page.rank;
-          } else {
+          var index = _.findIndex(candidates, function(i) {
+            if ('rank' in i && item.rank > i.rank) {
+              return true;
+            }
+          });
+          if (index < 0) {
             candidates.push(item);
+          } else {
+            candidates.splice(index, 0, item);
           }
         }
       });
 
       function welcomePageFallback() {
         if (welcome.pages.length === 0) {
+          log.debug("No welcome pages, going to first available nav");
           gotoFirstAvailableNav();
         }
         var sortedPages = _.sortBy(welcome.pages, function(page) { return page.rank; });
@@ -549,6 +557,31 @@ var HawtioMainNav;
     element.append($compile(template)(newScope));
   }
 
+  function sortByRank(collection) {
+    var answer = [];
+    collection.forEach(function(item) {
+      rankItem(item, answer);
+    });
+    return answer;
+  }
+
+  function rankItem(item, collection) {
+    if (!('rank' in item) || collection.length === 0) {
+      collection.push(item);
+      return;
+    }
+    var index = _.findIndex(collection, function(i) {
+      if ('rank' in i && item.rank > i.rank) {
+        return true;
+      }
+    });
+    if (index < 0) {
+      collection.push(item);
+    } else {
+      collection.splice(index, 0, item);
+    }
+  }
+
   HawtioMainNav._module.directive('hawtioSubTabs', ['HawtioNav', '$templateCache', '$compile', '$location', '$rootScope', function(HawtioNav, $templateCache, $compile, $location, $rootScope) {
     return {
       restrict: 'A',
@@ -648,6 +681,9 @@ var HawtioMainNav;
             // log.debug("redrawing");
             scope.redraw = false;
             element.empty();
+
+
+            var rankedContexts = [];
             // first add any contextual menus (like perspectives)
             HawtioNav.iterate(function(item) {
               if (!('context' in item)) {
@@ -656,13 +692,20 @@ var HawtioMainNav;
               if (!item.context) {
                 return;
               }
+              rankItem(item, rankedContexts);
+            });
+            rankedContexts.forEach(function (item) {
               drawNavItem($templateCache, $compile, scope, element, item);
             });
             // then add the rest of the nav items
+            var rankedTabs = [];
             HawtioNav.iterate(function(item) {
               if (item.context) {
                 return;
               }
+              rankItem(item, rankedTabs);
+            });
+            rankedTabs.forEach(function (item) {
               drawNavItem($templateCache, $compile, scope, element, item);
             });
           }

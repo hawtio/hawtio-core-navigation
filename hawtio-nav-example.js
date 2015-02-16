@@ -14,6 +14,7 @@ var Test;
         tab = builder.create()
                      .id(Test.pluginName)
                      .title(function () { return "Test"; })
+                     .rank(10)
                      .href(function () { return "/test1"; })
                      .subPath("Sub Page 1", "page1", builder.join(Test.templatePath, 'page1.html'))
                      .subPath("Sub Page 2", "page2", builder.join(Test.templatePath, 'page2.html'))
@@ -22,14 +23,23 @@ var Test;
 
         tab2 = builder.create()
                       .id(builder.join(Test.pluginName, '2'))
+                      .rank(15)
                       .title(function () { return "Test2"; })
                       .href(function () { return "/test2"; })
                       .page(function () { return builder.join(Test.templatePath, 'page1.html'); })
                       .build();
 
+        var positions = {
+          '1': 15,
+          '2': 15,
+          '3': 55,
+          '4': 65 
+        };
+
         ['1', '2', '3', '4'].forEach(function(index) {
           tabs.push(builder.create()
                            .id(builder.join('test', index))
+                           .rank(positions[index])
                            .title( function() { return 'Test ' + index; })
                            .href( function() { return '/many/' + index; })
                            .build());
@@ -62,7 +72,7 @@ var Test;
         rank: 10,
         isValid: function(yes, no) {
           setTimeout(function() {
-            yes();
+            no();
           }, 50);
         }
       };
@@ -70,8 +80,8 @@ var Test;
         rank: 20,
         isValid: function(yes, no) {
           setTimeout(function() {
-            yes();
-          }, 5000);
+            no();
+          }, 1000);
         }
       };
       HawtioNav.add(tab);
