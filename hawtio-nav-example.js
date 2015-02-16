@@ -54,10 +54,26 @@ var Test;
       tab.tabs.push({
         id: 'test',
         title: function() { return 'you should not see me!'; },
-        href: function() { return '/foo' },
+        href: function() { return '/foo'; },
         isValid: function() { return true; },
         show: function() { return false; }
       });
+      tab.defaultPage = {
+        rank: 10,
+        isValid: function(yes, no) {
+          setTimeout(function() {
+            yes();
+          }, 50);
+        }
+      };
+      tab2.defaultPage = {
+        rank: 20,
+        isValid: function(yes, no) {
+          setTimeout(function() {
+            yes();
+          }, 5000);
+        }
+      };
       HawtioNav.add(tab);
       HawtioNav.add(tab2);
       tabs.forEach(function(tab) { HawtioNav.add(tab); });
@@ -72,6 +88,14 @@ var Test;
                           .title(function() { return 'My Sub Tab 2'; })
                           .build();
       var tab3 = builder.id('foo')
+                        .defaultPage({
+                          rank: 40,
+                          isValid: function(yes, no) {
+                            setTimeout(function() {
+                              no();
+                            }, 50);
+                          }
+                        })
                         .href(function() { return '/foo'; })
                         .title(function() { return 'My Tab'; })
                         .tabs(subTab1, subTab2)

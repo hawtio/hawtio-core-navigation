@@ -260,6 +260,10 @@ var HawtioMainNav;
       this.self.template = template;
       return this;
     };
+    NavItemBuilderImpl.prototype.defaultPage = function(defaultPage) {
+      this.self.defaultPage = defaultPage;
+      return this;
+    };
     NavItemBuilderImpl.prototype.tabs = function(item) {
       var items = [];
       for (var _i = 1; _i < arguments.length; _i++) {
@@ -327,10 +331,13 @@ var HawtioMainNav;
 
   _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', function($scope, $location, welcome, nav, $timeout) {
 
-    function gotoNavItem(href) {
-      var uri = new URI(href);
+    function gotoNavItem(item) {
+      var uri = new URI(item.href());
       var search = _.merge($location.search(), uri.query(true));
-      $location.path(uri.path()).search(search);
+      log.debug("Would go to item id: ", item.id, " href: ", uri.path(), " query: ", search);
+      $timeout(function() {
+        $location.path(uri.path()).search(search);
+      }, 10);
     }
 
     function gotoFirstAvailableNav() {
@@ -343,44 +350,93 @@ var HawtioMainNav;
         var show = item.show || function() { return true; };
         if (isValid() && show()) {
           found = true;
-          gotoNavItem(item.href());
+          gotoNavItem(item);
         }
       });
     }
 
-    var search = $location.search();
-    if ('tab' in search && search['tab']) {
-      var tab = search['tab'];
-      var selected  = undefined;
-      nav.iterate(function (item) {
-        if (!selected && item.id === tab) {
-          selected = item;
-        }
-      });
-      if (selected) {
-        gotoNavItem(selected.href());
-        return;
-      }
-    }
-      
     $timeout(function() {
-      var candidates = [];
-      if (welcome.pages.length === 0) {
-        gotoFirstAvailableNav();
-      }
-      var sortedPages = _.sortBy(welcome.pages, function(page) { return page.rank; });
-      var page = _.find(sortedPages, function(page) {
-        if ('isValid' in page) {
-          return page.isValid();
+      var search = $location.search();
+      if (search.tab) {
+        var tab = search.tab;
+        var selected;
+        nav.iterate(function (item) {
+          if (!selected && item.id === tab) {
+            selected = item;
+          }
+        });
+        if (selected) {
+          gotoNavItem(selected);
+          return;
         }
-        return true;
-      });
-      if (page) {
-        gotoNavItem(item.href());
-      } else {
-        gotoFirstAvailableNav();
       }
-    }, 500);
+      var candidates = [];
+      var highestRank = 0;
+      nav.iterate(function(item) {
+        if ('defaultPage' in item) {
+          var page = item.defaultPage;
+          if (!('rank' in page)) {
+            candidates.push(item);
+          }
+          if (page.rank > highestRank) {
+            candidates.splice(0, 0, item);
+            highestRank = page.rank;
+          } else {
+            candidates.push(item);
+          }
+        }
+      });
+
+      function welcomePageFallback() {
+        if (welcome.pages.length === 0) {
+          gotoFirstAvailableNav();
+        }
+        var sortedPages = _.sortBy(welcome.pages, function(page) { return page.rank; });
+        var page = _.find(sortedPages, function(page) {
+          if ('isValid' in page) {
+            return page.isValid();
+          }
+          return true;
+        });
+        if (page) {
+          gotoNavItem(item);
+        } else {
+          gotoFirstAvailableNav();
+        }
+      }
+
+      function evalCandidates(candidates) {
+        if (candidates.length === 0) {
+          welcomePageFallback();
+          return;
+        }
+        var item = candidates[0];
+        var remaining = candidates.slice(1);
+        log.debug("Trying candidate: ", item, " remaining: ", remaining);
+        if (!item) {
+          welcomePageFallback();
+          return;
+        }
+        var func = item.defaultPage.isValid;
+        if (func) {
+          var yes = function() {
+            gotoNavItem(item);
+          };
+          var no = function() {
+            evalCandidates(remaining);
+          };
+          try {
+            func(yes, no);
+          } catch (err) {
+            log.debug("Failed to eval item: ", item.id, " error: ", err);
+            no();
+          }
+        } else {
+          evalCandidates(remaining);
+        }
+      }
+      evalCandidates(candidates);
+    }, 50);
   }]);
 
   _module.controller('HawtioNav.ViewController', ['$scope', '$route', '$location', 'layoutFull', 'viewRegistry', function($scope, $route, $location, layoutFull, viewRegistry) {
