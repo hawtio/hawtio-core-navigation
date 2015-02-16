@@ -327,6 +327,12 @@ var HawtioMainNav;
 
   _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', function($scope, $location, welcome, nav, $timeout) {
 
+    function gotoNavItem(href) {
+      var uri = new URI(href);
+      var search = _.merge($location.search(), uri.query(true));
+      $location.path(uri.path()).search(search);
+    }
+
     function gotoFirstAvailableNav() {
       var found = false;
       nav.iterate(function(item) {
@@ -337,12 +343,28 @@ var HawtioMainNav;
         var show = item.show || function() { return true; };
         if (isValid() && show()) {
           found = true;
-          $location.url(item.href());
+          gotoNavItem(item.href());
         }
       });
     }
 
+    var search = $location.search();
+    if ('tab' in search && search['tab']) {
+      var tab = search['tab'];
+      var selected  = undefined;
+      nav.iterate(function (item) {
+        if (!selected && item.id === tab) {
+          selected = item;
+        }
+      });
+      if (selected) {
+        gotoNavItem(selected.href());
+        return;
+      }
+    }
+      
     $timeout(function() {
+      var candidates = [];
       if (welcome.pages.length === 0) {
         gotoFirstAvailableNav();
       }
@@ -354,13 +376,11 @@ var HawtioMainNav;
         return true;
       });
       if (page) {
-        $location.url(page.href());
+        gotoNavItem(item.href());
       } else {
         gotoFirstAvailableNav();
       }
     }, 500);
-
-
   }]);
 
   _module.controller('HawtioNav.ViewController', ['$scope', '$route', '$location', 'layoutFull', 'viewRegistry', function($scope, $route, $location, layoutFull, viewRegistry) {
@@ -514,13 +534,11 @@ var HawtioMainNav;
       numKeys: 0,
       numValid: 0
     };
-
     var iterationFunc = function(item) {
       if (itemIsValid(item)) {
         config.numValid = config.numValid + 1;
       }
     };
-
     HawtioNav.on(HawtioMainNav.Actions.ADD, 'isSelectedEnricher', function(item) {
       addIsSelected($location, item);
       if (item.tabs) {

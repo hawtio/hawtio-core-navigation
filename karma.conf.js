@@ -23,6 +23,16 @@ module.exports = function(config) {
       'libs/hawtio-core/hawtio-core.js',
       'libs/lodash/dist/lodash.compat.js',
       'libs/angular-route/angular-route.js',
+      'libs/uri.js/src/URI.js',
+      'libs/uri.js/src/IPv6.js',
+      'libs/uri.js/src/SecondLevelDomains.js',
+      'libs/uri.js/src/punycode.js',
+      'libs/uri.js/src/URITemplate.js',
+      'libs/uri.js/src/jquery.URI.js',
+      'libs/uri.js/src/URI.min.js',
+      'libs/uri.js/src/jquery.URI.min.js',
+      'libs/uri.js/src/URI.fragmentQuery.js',
+      'libs/uri.js/src/URI.fragmentURI.js',
       // endbower
       'dist/hawtio-core-navigation.js',
       'test/*.js'

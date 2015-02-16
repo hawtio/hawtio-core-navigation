@@ -61,31 +61,22 @@ var Test;
       HawtioNav.add(tab);
       HawtioNav.add(tab2);
       tabs.forEach(function(tab) { HawtioNav.add(tab); });
-
       var builder = HawtioNav.builder();
-
       var subTab1 = builder.id('fooSubTab')
                           .href(function() { return '/foo/bar'; })
                           .title(function() { return 'My Sub Tab 2'; })
                           .show(function () { return true; })
                           .build();
-
       var subTab2 = builder.id('fooSubTab')
                           .href(function() { return '/foo/barBaz'; })
                           .title(function() { return 'My Sub Tab 2'; })
                           .build();
-
       var tab3 = builder.id('foo')
                         .href(function() { return '/foo'; })
                         .title(function() { return 'My Tab'; })
                         .tabs(subTab1, subTab2)
                         .build();
-      
       HawtioNav.add(tab3);
-
-
-        
-
     }]);
     hawtioPluginLoader.addModule(Test.pluginName);
 })(Test || (Test = {}));
