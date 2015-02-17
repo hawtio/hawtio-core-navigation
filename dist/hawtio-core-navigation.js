@@ -579,6 +579,9 @@ var HawtioMainNav;
         return true;
       }
     });
+    if (!('rank' in collection[0])) {
+      index = 0;
+    }
     if (index < 0) {
       collection.push(item);
     } else {
@@ -710,6 +713,7 @@ var HawtioMainNav;
               }
               rankItem(item, rankedTabs);
             });
+            log.debug("ranked tabs: ", rankedTabs);
             rankedTabs.forEach(function (item) {
               drawNavItem($templateCache, $compile, scope, element, item);
             });
