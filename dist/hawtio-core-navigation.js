@@ -459,6 +459,38 @@ var HawtioMainNav;
       findViewPartial();
     });
 
+    function searchRegistryViaQuery(query) {
+      var answer = undefined;
+      if (!query || _.keys(query).length === 0) {
+        log.debug("No query, skipping query matching");
+        return;
+      }
+      var keys = _.keys(viewRegistry);
+      var candidates = _.filter(keys, function(key) { return key.charAt(0) === '{'; });
+      candidates.forEach(function(candidate) {
+        if (!answer) {
+          try {
+            var obj = angular.fromJson(candidate);
+            if (_.isObject(obj)) {
+              _.merge(obj, query, function(a, b) {
+                if (a) {
+                  if (a === b) {
+                    answer = viewRegistry[candidate];
+                  } else {
+                    answer = undefined;
+                  }
+                }
+              });
+            }
+          } catch (e) {
+            // ignore and move on...
+            log.debug("Unable to parse json: ", candidate);
+          }
+        }
+      });
+      return answer;
+    }
+
     function searchRegistry(path) {
       var answer = undefined;
       _.forIn(viewRegistry, function (value, key) {
@@ -479,18 +511,22 @@ var HawtioMainNav;
     function findViewPartial() {
       var answer = null;
       var hash = $location.search();
-      var tab = hash['tab'];
-      if (angular.isString(tab)) {
-        answer = searchRegistry(tab);
+      answer = searchRegistryViaQuery(hash);
+      if (answer) {
+        log.debug("View partial matched on query");
       }
       if (!answer) {
         var path = $location.path();
         if (path) {
           answer = searchRegistry(path);
+          if (answer) {
+            log.debug("View partial matched on path name");
+          }
         }
       }
       if (!answer) {
         answer = layoutFull;
+        log.debug("Using default view partial");
       }
       $scope.viewPartial = answer;
 
@@ -713,7 +749,6 @@ var HawtioMainNav;
               }
               rankItem(item, rankedTabs);
             });
-            log.debug("ranked tabs: ", rankedTabs);
             rankedTabs.forEach(function (item) {
               drawNavItem($templateCache, $compile, scope, element, item);
             });
