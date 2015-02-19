@@ -21,7 +21,7 @@ module.exports = function(config) {
       'libs/angular-sanitize/angular-sanitize.js',
       'libs/js-logger/src/logger.js',
       'libs/hawtio-core/hawtio-core.js',
-      'libs/lodash/dist/lodash.compat.js',
+      'libs/lodash/lodash.js',
       'libs/angular-route/angular-route.js',
       'libs/uri.js/src/URI.js',
       'libs/uri.js/src/IPv6.js',
