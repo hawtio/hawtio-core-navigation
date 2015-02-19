@@ -340,12 +340,14 @@ var HawtioMainNav;
   _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', function($scope, $location, welcome, nav, $timeout) {
 
     function gotoNavItem(item) {
-      var uri = new URI(item.href());
-      var search = _.merge($location.search(), uri.query(true));
-      log.debug("Going to item id: ", item.id, " href: ", uri.path(), " query: ", search);
-      $timeout(function() {
-        $location.path(uri.path()).search(search);
-      }, 10);
+      if (item && item.href) {
+        var uri = new URI(item.href());
+        var search = _.merge($location.search(), uri.query(true));
+        log.debug("Going to item id: ", item.id, " href: ", uri.path(), " query: ", search);
+        $timeout(function() {
+          $location.path(uri.path()).search(search);
+        }, 10);
+      }
     }
 
     function gotoFirstAvailableNav() {
