@@ -2,6 +2,8 @@
 
 A core plugin that provides the main navigation bar and an API to manipulate the navigation bar for the **[hawtio](http://hawt.io)** web console.
 
+[![Circle CI](https://circleci.com/gh/hawtio/hawtio-core-navigation.svg?style=svg)](https://circleci.com/gh/hawtio/hawtio-core-navigation)
+
 ### Basic usage
 * `bower install --save hawtio-core-navigation`
 
