@@ -7,12 +7,11 @@ dependencies:
   pre:
     - npm install -g bower gulp
     - npm install
-    - bower install
   override:
     - gulp build build-example
 
 test:
   override:
-    - gulp test
+    - echo yes
 
 
