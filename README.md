@@ -89,9 +89,6 @@ A core plugin that provides the main navigation bar and an API to manipulate the
     var tab = builder.id('foo')
                      .defaultPage({
                        rank: 30, // rank is used to handle multiple default pages, higher values win
-```
-  var builder = HawtioNav.builder();
-```
                        isValid: (yes, no) => { // isValid is used to test if a page can be the default page or not.  You need to call either the yes or no function passed in based on some criteria, can be async.
                          if (someKindOfTest) {
                            yes();
