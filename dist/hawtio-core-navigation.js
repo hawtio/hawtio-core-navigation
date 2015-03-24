@@ -578,22 +578,29 @@ var HawtioMainNav;
   function addIsSelected($location, item) {
     if (!('isSelected' in item) && 'href' in item) {
       item.isSelected = function() {
-        var href = new URI(item.href());
+        // item.href() might be relative, in which
+        // case we should let the browser resolve
+        // what the full path should be
+        var tmpLink = $('<a>')
+          .attr("href", item.href());
+        var href = new URI(tmpLink[0].href);
+
         var current = new URI();
         var path = current.path();
         var query = current.query(true);
         var mainTab = query['main-tab'];
         var subTab = query['sub-tab'];
         var answer = false;
+
         if (item.isSubTab) {
           if (!subTab) {
-            answer = _.endsWith(path, href.path());
+            answer = _.startsWith(path, href.path());
           } else {
             answer = subTab === item.id;
           }
         } else {
           if (!mainTab) {
-            answer = _.endsWith(path, href.path());
+            answer = _.startsWith(path, href.path());
           } else {
             answer = mainTab === item.id;
           }
