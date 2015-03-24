@@ -283,7 +283,7 @@ var HawtioMainNav;
         this.self.tabs = [];
       }
       var tab = {
-        id: '',
+        id: parent.id + '-' + path,
         title: function() {
           return title;
         },
