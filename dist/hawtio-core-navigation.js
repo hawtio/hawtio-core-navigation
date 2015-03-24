@@ -658,23 +658,34 @@ var HawtioMainNav;
     return {
       restrict: 'A',
       controller: ['$scope', function($scope) {
-        $scope.nav = HawtioNav;
         $scope.redraw = true;
-        $scope.$watch('nav.selected().length', function(length) {
-          $scope.redraw = true;
-        });
-        $scope.$watchCollection('nav.selected()', function(selected) {
-          $scope.redraw = true;
+        $scope.$watch(function() {
+          if ($scope.redraw) {
+            return;
+          }
+          var selected = HawtioNav.selected();
+          if (selected) {
+            var tabs = selected.tabs;
+            if (tabs) {
+              var tabsJson = angular.toJson(tabs);
+              if (tabsJson !== $scope.tabsJson) {
+                $scope.redraw = true;
+              }
+            } 
+          }
         });
         $scope.$on('hawtio-nav-redraw', function() {
+          log.debug("got event, redrawing sub-tabs");
           $scope.redraw = true;
         });
       }],
       link: function(scope, element, attrs) {
-        scope.$watch('redraw', function(redraw) {
+        scope.$watch('redraw', function() {
+          log.debug("Redrawing sub-tabs");
           element.empty();
           var selectedNav = HawtioNav.selected();
           if (selectedNav && selectedNav.tabs) {
+            scope.tabsJson = angular.toJson(selectedNav.tabs);
             if (attrs['showHeading']) {
               var heading = angular.extend({}, selectedNav, {
                 template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
