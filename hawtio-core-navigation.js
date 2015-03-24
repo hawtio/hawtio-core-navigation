@@ -660,6 +660,9 @@ var HawtioMainNav;
       controller: ['$scope', function($scope) {
         $scope.nav = HawtioNav;
         $scope.redraw = true;
+        $scope.$watch('nav.selected().length', function(length) {
+          $scope.redraw = true;
+        });
         $scope.$watchCollection('nav.selected()', function(selected) {
           $scope.redraw = true;
         });
