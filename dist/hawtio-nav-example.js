@@ -111,6 +111,15 @@ var Test;
                         .tabs(subTab1, subTab2)
                         .build();
       HawtioNav.add(tab3);
+      HawtioNav.add(builder.id('PullRightLink')
+                           .title(function() { return 'github'; })
+                           .href(function() { return 'http://github.com'; })
+                           .attributes({
+                             'class': 'pull-right'
+                           })
+                           .linkAttributes({
+                             'target': '_blank' 
+                           }).build());
     }]);
     hawtioPluginLoader.addModule(Test.pluginName);
 })(Test || (Test = {}));
