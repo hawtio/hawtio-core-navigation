@@ -739,6 +739,9 @@ var HawtioMainNav;
             subItem.oldHref = subItem.href;
             subItem.href = function() {
               var uri = new URI(subItem.oldHref());
+              if (uri.path() === "") {
+                return "";
+              }
               uri.search(function(search) {
                 if (!search['main-tab']) {
                   search['main-tab'] = item.id;
@@ -760,6 +763,9 @@ var HawtioMainNav;
         item.oldHref = item.href;
         item.href = function() {
           var uri = new URI(item.oldHref());
+          if (uri.path() === "") {
+            return "";
+          }
           uri.search(function(search) {
             if (!search['main-tab']) {
               search['main-tab'] = item.id;
