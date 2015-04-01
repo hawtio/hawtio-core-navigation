@@ -1,6 +1,6 @@
 {
   "name": "hawtio-core-navigation",
-  "version": "2.0.37",
+  "version": "2.0.38",
   "main": [
     "dist/hawtio-core-navigation.js"
   ],
