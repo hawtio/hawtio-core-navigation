@@ -228,6 +228,10 @@ var HawtioMainNav;
       this.self.title = title;
       return this;
     };
+    NavItemBuilderImpl.prototype.tooltip = function(tooltip) {
+      this.self.tooltip = tooltip;
+      return this;
+    };
     NavItemBuilderImpl.prototype.page = function(page) {
       this.self.page = page;
       return this;

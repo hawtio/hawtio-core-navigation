@@ -14,6 +14,7 @@ var Test;
         tab = builder.create()
                      .id(Test.pluginName)
                      .title(function () { return "Test"; })
+                     .tooltip(function () { return "This is the tooltip"; })
                      .rank(10)
                      .href(function () { return "/test1"; })
                      .subPath("Sub Page 1", "page1", builder.join(Test.templatePath, 'page1.html'), 1)
@@ -25,6 +26,7 @@ var Test;
                       .id(builder.join(Test.pluginName, '2'))
                       .rank(15)
                       .title(function () { return "Test2"; })
+                      .tooltip(function () { return "This is the tooltip for test2"; })
                       .href(function () { return "/test2"; })
                       .page(function () { return builder.join(Test.templatePath, 'page1.html'); })
                       .build();
