@@ -606,7 +606,6 @@ var HawtioMainNav;
 
         if (itemPath !== '' && !mainTab && !subTab) {
           if (item.isSubTab && _.startsWith(path, itemPath)) {
-            log.debug("Matched item: ", item.id, " path: ", href.path(), " item.href: ", item.href());
             return true;
           }
           if (item.tabs) {
@@ -614,7 +613,6 @@ var HawtioMainNav;
               return item.isSelected();
             });
             if (answer) {
-              log.debug("Matched item: ", item.id, " path: ", href.path());
               return true;
             }
           }
