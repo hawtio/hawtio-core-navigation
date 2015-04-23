@@ -596,12 +596,30 @@ var HawtioMainNav;
         var tmpLink = $('<a>')
           .attr("href", item.href());
         var href = new URI(tmpLink[0].href);
+        var itemPath = Core.trimLeading(href.path(), '/');
 
         var current = new URI();
-        var path = current.path();
+        var path = Core.trimLeading(current.path(), '/');
         var query = current.query(true);
         var mainTab = query['main-tab'];
         var subTab = query['sub-tab'];
+
+        if (itemPath !== '' && !mainTab && !subTab) {
+          if (item.isSubTab && _.startsWith(path, itemPath)) {
+            log.debug("Matched item: ", item.id, " path: ", href.path(), " item.href: ", item.href());
+            return true;
+          }
+          if (item.tabs) {
+            var answer = _.any(item.tabs, function(item) {
+              return item.isSelected();
+            });
+            if (answer) {
+              log.debug("Matched item: ", item.id, " path: ", href.path());
+              return true;
+            }
+          }
+        }
+
         var answer = false;
 
         if (item.isSubTab) {
