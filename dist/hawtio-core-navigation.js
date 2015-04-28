@@ -345,7 +345,11 @@ var HawtioMainNav;
 
   _module.constant('layoutFull', 'templates/main-nav/layoutFull.html');
 
-  _module.config(['$routeProvider', function($routeProvider) {
+  _module.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: true
+    });
     $routeProvider.otherwise({ templateUrl: 'templates/main-nav/welcome.html' });
   }]);
 
@@ -549,11 +553,35 @@ var HawtioMainNav;
     }
   }]);
 
-  _module.run(['HawtioNav', '$rootScope', '$route', function(HawtioNav, $rootScope, $route) {
+  _module.run(['HawtioNav', '$rootScope', '$route', '$document', function(HawtioNav, $rootScope, $route, $document) {
     HawtioNav.on(HawtioMainNav.Actions.CHANGED, "$apply", function(item) {
       if(!$rootScope.$$phase) {
         $rootScope.$apply();
       }
+    });
+
+    var base = $document.find('base');
+    var href = base.attr('href');
+
+    function applyBaseHref(item) {
+      if (!item.preBase) {
+        item.preBase = item.href;
+        item.href = function() {
+          if (href) {
+            var preBase = item.preBase();
+            if (preBase.charAt(0) === '/') {
+              preBase = preBase.substr(1);
+            }
+            return href + preBase;
+          } else {
+            return item.preBase();
+          }
+        };
+      }
+    }
+    HawtioNav.on(HawtioMainNav.Actions.ADD, "htmlBaseRewriter", function(item) {
+      applyBaseHref(item);
+      _.forEach(item.tabs, applyBaseHref);
     });
     HawtioNav.on(HawtioMainNav.Actions.ADD, "$apply", function(item) {
       var oldClick = item.click;
@@ -606,7 +634,6 @@ var HawtioMainNav;
 
         if (itemPath !== '' && !mainTab && !subTab) {
           if (item.isSubTab && _.startsWith(path, itemPath)) {
-            log.debug("Matched item: ", item.id, " path: ", href.path(), " item.href: ", item.href());
             return true;
           }
           if (item.tabs) {
@@ -614,7 +641,6 @@ var HawtioMainNav;
               return item.isSelected();
             });
             if (answer) {
-              log.debug("Matched item: ", item.id, " path: ", href.path());
               return true;
             }
           }
