@@ -569,7 +569,7 @@ var HawtioMainNav;
         item.href = function() {
           if (href) {
             var preBase = item.preBase();
-            if (preBase.charAt(0) === '/') {
+            if (preBase && preBase.charAt(0) === '/') {
               preBase = preBase.substr(1);
             }
             return href + preBase;
