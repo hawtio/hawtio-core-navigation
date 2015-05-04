@@ -17,6 +17,20 @@
 var HawtioMainNav;
 (function(HawtioMainNav) {
 
+  function documentBase($document) {
+    var base = $document.find('base');
+    return base.attr('href');
+  }
+
+  function trimLeading(text, prefix) {
+    if (text && prefix) {
+      if (_.startsWith(text, prefix) || text.indexOf(prefix) === 0) {
+        return text.substring(prefix.length);
+      }
+    }
+    return text;
+  }
+
   HawtioMainNav.pluginName = 'hawtio-nav';
   var log = Logger.get(HawtioMainNav.pluginName);
 
@@ -353,11 +367,12 @@ var HawtioMainNav;
     $routeProvider.otherwise({ templateUrl: 'templates/main-nav/welcome.html' });
   }]);
 
-  _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', function($scope, $location, welcome, nav, $timeout) {
+  _module.controller('HawtioNav.WelcomeController', ['$scope', '$location', 'WelcomePageRegistry', 'HawtioNav', '$timeout', '$document', function($scope, $location, welcome, nav, $timeout, $document) {
 
     function gotoNavItem(item) {
       if (item && item.href) {
-        var uri = new URI(item.href());
+        href = trimLeading(item.href(), documentBase($document));
+        var uri = new URI(href);
         var search = _.merge($location.search(), uri.query(true));
         log.debug("Going to item id: ", item.id, " href: ", uri.path(), " query: ", search);
         $timeout(function() {
@@ -560,8 +575,7 @@ var HawtioMainNav;
       }
     });
 
-    var base = $document.find('base');
-    var href = base.attr('href');
+    var href = documentBase($document);
 
     function applyBaseHref(item) {
       if (!item.preBase) {
@@ -624,10 +638,10 @@ var HawtioMainNav;
         var tmpLink = $('<a>')
           .attr("href", item.href());
         var href = new URI(tmpLink[0].href);
-        var itemPath = Core.trimLeading(href.path(), '/');
+        var itemPath = trimLeading(href.path(), '/');
 
         var current = new URI();
-        var path = Core.trimLeading(current.path(), '/');
+        var path = trimLeading(current.path(), '/');
         var query = current.query(true);
         var mainTab = query['main-tab'];
         var subTab = query['sub-tab'];
