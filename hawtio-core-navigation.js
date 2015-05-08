@@ -1,5 +1,10 @@
-// Polyfill custom event if necessary since we kinda need it
+/* global _ */
+/* global angular */
+/* global jQuery */
+
 /*globals window document Logger CustomEvent URI _ $ angular hawtioPluginLoader jQuery*/
+
+// Polyfill custom event if necessary since we kinda need it
 (function () {
   if (!window.CustomEvent) {
     function CustomEvent ( event, params ) {
@@ -585,17 +590,18 @@ var HawtioMainNav;
             var preBase = item.preBase();
             if (preBase && preBase.charAt(0) === '/') {
               preBase = preBase.substr(1);
+	            return href + preBase;
             }
-            return href + preBase;
-          } else {
-            return item.preBase();
           }
+          return item.preBase();
         };
       }
     }
     HawtioNav.on(HawtioMainNav.Actions.ADD, "htmlBaseRewriter", function(item) {
-      applyBaseHref(item);
-      _.forEach(item.tabs, applyBaseHref);
+			if (item.href) {
+	      applyBaseHref(item);
+	      _.forEach(item.tabs, applyBaseHref);
+			}
     });
     HawtioNav.on(HawtioMainNav.Actions.ADD, "$apply", function(item) {
       var oldClick = item.click;

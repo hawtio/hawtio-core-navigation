@@ -1,3 +1,9 @@
+/* global _ */
+/* global angular */
+/* global jQuery */
+
+/*globals window document Logger CustomEvent URI _ $ angular hawtioPluginLoader jQuery*/
+
 // Polyfill custom event if necessary since we kinda need it
 (function () {
   if (!window.CustomEvent) {
@@ -371,7 +377,7 @@ var HawtioMainNav;
 
     function gotoNavItem(item) {
       if (item && item.href) {
-        href = trimLeading(item.href(), documentBase($document));
+        var href = trimLeading(item.href(), documentBase($document));
         var uri = new URI(href);
         var search = _.merge($location.search(), uri.query(true));
         log.debug("Going to item id: ", item.id, " href: ", uri.path(), " query: ", search);
@@ -382,7 +388,6 @@ var HawtioMainNav;
     }
 
     function gotoFirstAvailableNav() {
-      var found = false;
       var candidates = [];
       nav.iterate(function(item) {
         var isValid = item.isValid || function() { return true; };
@@ -444,7 +449,7 @@ var HawtioMainNav;
           return true;
         });
         if (page) {
-          gotoNavItem(item);
+          gotoNavItem(page);
         } else {
           gotoFirstAvailableNav();
         }
@@ -534,7 +539,7 @@ var HawtioMainNav;
               answer = value;
             }
           } catch (e) {
-            log.debug("Invalid RegExp " + text + " for viewRegistry value: " + value);
+            log.debug("Invalid RegExp " + key + " for viewRegistry value: " + value);
           }
         }
       });
@@ -585,17 +590,18 @@ var HawtioMainNav;
             var preBase = item.preBase();
             if (preBase && preBase.charAt(0) === '/') {
               preBase = preBase.substr(1);
+	            return href + preBase;
             }
-            return href + preBase;
-          } else {
-            return item.preBase();
           }
+          return item.preBase();
         };
       }
     }
     HawtioNav.on(HawtioMainNav.Actions.ADD, "htmlBaseRewriter", function(item) {
-      applyBaseHref(item);
-      _.forEach(item.tabs, applyBaseHref);
+			if (item.href) {
+	      applyBaseHref(item);
+	      _.forEach(item.tabs, applyBaseHref);
+			}
     });
     HawtioNav.on(HawtioMainNav.Actions.ADD, "$apply", function(item) {
       var oldClick = item.click;
