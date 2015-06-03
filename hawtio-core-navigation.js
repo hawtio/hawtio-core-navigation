@@ -635,14 +635,15 @@ var HawtioMainNav;
     return false;
   }
 
+  // Construct once and share between invocations to avoid memory leaks
+  var tmpLink = $('<a>');
   function addIsSelected($location, item) {
     if (!('isSelected' in item) && 'href' in item) {
       item.isSelected = function() {
         // item.href() might be relative, in which
         // case we should let the browser resolve
         // what the full path should be
-        var tmpLink = $('<a>')
-          .attr("href", item.href());
+        tmpLink.attr("href", item.href());
         var href = new URI(tmpLink[0].href);
         var itemPath = trimLeading(href.path(), '/');
 
