@@ -4,7 +4,7 @@ var Test;
     // simple test plugin for messing with the nav bar
     Test.pluginName = 'test';
     Test.templatePath = 'test/html';
-    Test.log = Logger.get(Test.pluginName);
+    var log = Test.log = Logger.get(Test.pluginName);
     Test._module = angular.module(Test.pluginName, []);
     var tab = null;
     var tab2 = null;
@@ -59,7 +59,7 @@ var Test;
         $routeProvider.when('/foo/bar', { templateUrl: builder.join(Test.templatePath, 'page1.html') });
         $routeProvider.when('/foo/barBaz', { templateUrl: builder.join(Test.templatePath, 'page2.html') });
     }]);
-    Test._module.run(["viewRegistry", "HawtioNav", function (viewRegistry, HawtioNav) {
+    Test._module.run(["viewRegistry", "HawtioNav", "$interval", function (viewRegistry, HawtioNav, $interval) {
 
       viewRegistry['foo'] = 'templates/main-nav/layoutTest.html';
       Test.log.debug('loaded');
@@ -67,8 +67,7 @@ var Test;
         id: 'test',
         title: function() { return 'you should not see me!'; },
         href: function() { return '/foo'; },
-        isValid: function() { return true; },
-        show: function() { return false; }
+        isValid: function() { return valid; },
       });
       tab.defaultPage = {
         rank: 10,
@@ -90,12 +89,12 @@ var Test;
       HawtioNav.add(tab2);
       tabs.forEach(function(tab) { HawtioNav.add(tab); });
       var builder = HawtioNav.builder();
-      var subTab1 = builder.id('fooSubTab')
+      var subTab1 = builder.id('fooSubTab1')
                           .href(function() { return '/foo/bar'; })
                           .title(function() { return 'My Sub Tab 2'; })
                           .show(function () { return true; })
                           .build();
-      var subTab2 = builder.id('fooSubTab')
+      var subTab2 = builder.id('fooSubTab2')
                           .href(function() { return '/foo/barBaz'; })
                           .title(function() { return 'My Sub Tab 2'; })
                           .build();
@@ -113,6 +112,20 @@ var Test;
                         .tabs(subTab1, subTab2)
                         .build();
       HawtioNav.add(tab3);
+      var valid = true;
+      $interval(function() { 
+        log.debug("Interval fired!"); 
+        valid = !valid;
+      }, 1000);
+
+      /*
+      HawtioNav.add(builder.id('Blinky')
+                      .title(function() { return 'Blinky' })
+                      .href(function() { return '/'; })
+                      .isValid(function() { return valid })
+                      .build());
+                      */
+
       HawtioNav.add(builder.id('PullRightLink')
                            .title(function() { return 'github'; })
                            .href(function() { return 'http://github.com'; })
