@@ -671,13 +671,13 @@ var HawtioMainNav;
 
         if (item.isSubTab) {
           if (!subTab) {
-            answer = _.startsWith(path, href.path());
+            answer = _.startsWith(path, itemPath);
           } else {
             answer = subTab === item.id;
           }
         } else {
           if (!mainTab) {
-            answer = _.startsWith(path, href.path());
+            answer = _.startsWith(path, itemPath);
           } else {
             answer = mainTab === item.id;
           }
