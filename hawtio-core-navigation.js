@@ -140,9 +140,15 @@ var HawtioMainNav;
       this.items.forEach(iterator);
     };
     RegistryImpl.prototype.selected = function() {
-      return _.find(this.items, function(item) {
-        return item.isSelected && item.isSelected();
+      var answer = _.find(this.items, function(item) {
+        var answer = false;
+        if (!item.isSelected) {
+          return answer;
+        }
+        var answer = item.isSelected();
+        return answer;
       });
+      return answer;
     };
     RegistryImpl.prototype.on = function(action, key, fn) {
       var _this = this;
@@ -646,29 +652,30 @@ var HawtioMainNav;
         tmpLink.attr("href", item.href());
         var href = new URI(tmpLink[0].href);
         var itemPath = trimLeading(href.path(), '/');
-
+        if (itemPath === '') {
+          log.debug("nav item: ", item.id, " returning empty href, can't be selected");
+          return false;
+        }
         var current = new URI();
         var path = trimLeading(current.path(), '/');
         var query = current.query(true);
         var mainTab = query['main-tab'];
         var subTab = query['sub-tab'];
-
         if (itemPath !== '' && !mainTab && !subTab) {
           if (item.isSubTab && _.startsWith(path, itemPath)) {
             return true;
           }
           if (item.tabs) {
-            var answer = _.any(item.tabs, function(item) {
-              return item.isSelected();
+            var answer = _.any(item.tabs, function(subTab) {
+              var answer = subTab.isSelected();
+              return answer;
             });
             if (answer) {
               return true;
             }
           }
         }
-
         var answer = false;
-
         if (item.isSubTab) {
           if (!subTab) {
             answer = _.startsWith(path, itemPath);
