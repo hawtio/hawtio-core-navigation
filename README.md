@@ -9,7 +9,7 @@ A core plugin that provides the main navigation bar and an API to manipulate the
 
 * In your hawtio plugin you can configure your routes and the navigation bar in one go:
 
-```
+```javascript
   var tab = undefined;
   var module = angular.module("MyAwesomePlugin", []);
 
@@ -34,7 +34,7 @@ A core plugin that provides the main navigation bar and an API to manipulate the
 
 * You can also configure your routes separately for more control and configure the tabs in your module's run method:
 
-```
+```javascript
   var module = angular.module("MyAwesomePlugin", []);
   // configure routing...
   module.config(['$routeProvider', function($routeProvider) {
@@ -68,7 +68,7 @@ A core plugin that provides the main navigation bar and an API to manipulate the
 
 * Tabs can also influence what the initial page/route will be by adding a 'defaultPage' attribute, for example:
 
-```
+```javascript
   var module = angular.module("MyAwesomePlugin", []);
   // configure routing...
   module.config(['$routeProvider', function($routeProvider) {
