@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     wiredep = require('wiredep').stream,
     karma = require('karma').server,
+    del = require('del'),
     gulpLoadPlugins = require('gulp-load-plugins');
 var plugins = gulpLoadPlugins({ lazy: false });
 
@@ -33,8 +34,7 @@ gulp.task('concat', ['templates'], function() {
 });
 
 gulp.task('clean', ['concat'], function() {
-  return gulp.src('./templates.js', { read: false })
-    .pipe(plugins.clean());
+  return del('./templates.js');
 });
 
 gulp.task('example-templates', function() {
@@ -54,8 +54,7 @@ gulp.task('example-concat', ['example-templates'], function() {
 });
 
 gulp.task('example-clean', ['example-concat'], function() {
-  return gulp.src('./example-templates.js', { read: false })
-    .pipe(plugins.clean());
+  return del('./example-templates.js');
 });
 
 gulp.task('watch', function() {
