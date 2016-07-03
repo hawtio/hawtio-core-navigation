@@ -5,8 +5,9 @@
 /*globals window document Logger CustomEvent URI _ $ angular hawtioPluginLoader jQuery*/
 
 // Polyfill custom event if necessary since we kinda need it
+// https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
 (function () {
-  if (!window.CustomEvent) {
+  if (typeof window.CustomEvent !== "function") {
     function CustomEvent ( event, params ) {
       params = params || { bubbles: false, cancelable: false, detail: undefined };
       var evt = document.createEvent( 'CustomEvent' );
@@ -1004,8 +1005,8 @@ var HawtioMainNav;
 
 
 
-angular.module("hawtio-nav").run(["$templateCache", function($templateCache) {$templateCache.put("templates/main-nav/layoutFull.html","<div ng-view></div>\n\n\n");
-$templateCache.put("templates/main-nav/layoutTest.html","<div>\n  <h1>Test Layout</h1>\n  <div ng-view>\n\n\n  </div>\n</div>\n\n\n");
-$templateCache.put("templates/main-nav/navItem.html","<li ng-class=\"{ active: item.isSelected() }\" ng-hide=\"item.hide()\">\n  <a ng-href=\"{{item.href()}}\" ng-click=\"item.click($event)\" ng-bind-html=\"item.title()\" title=\"{{item.tooltip()}}\"></a>\n</li>\n");
-$templateCache.put("templates/main-nav/subTabHeader.html","<li class=\"header\">\n  <a href=\"\"><strong>{{item.title()}}</strong></a>\n</li>\n");
-$templateCache.put("templates/main-nav/welcome.html","<div ng-controller=\"HawtioNav.WelcomeController\"></div>\n");}]);
+angular.module("hawtio-nav").run(["$templateCache", function($templateCache) {$templateCache.put("templates/main-nav/layoutFull.html","<div ng-view></div>\r\n\r\n\r\n");
+$templateCache.put("templates/main-nav/layoutTest.html","<div>\r\n  <h1>Test Layout</h1>\r\n  <div ng-view>\r\n\r\n\r\n  </div>\r\n</div>\r\n\r\n\r\n");
+$templateCache.put("templates/main-nav/navItem.html","<li ng-class=\"{ active: item.isSelected() }\" ng-hide=\"item.hide()\">\r\n  <a ng-href=\"{{item.href()}}\" ng-click=\"item.click($event)\" ng-bind-html=\"item.title()\" title=\"{{item.tooltip()}}\"></a>\r\n</li>\r\n");
+$templateCache.put("templates/main-nav/subTabHeader.html","<li class=\"header\">\r\n  <a href=\"\"><strong>{{item.title()}}</strong></a>\r\n</li>\r\n");
+$templateCache.put("templates/main-nav/welcome.html","<div ng-controller=\"HawtioNav.WelcomeController\"></div>\r\n");}]);

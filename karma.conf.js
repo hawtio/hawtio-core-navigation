@@ -20,7 +20,7 @@ module.exports = function(config) {
       'libs/angular/angular.js',
       'libs/angular-sanitize/angular-sanitize.js',
       'libs/js-logger/src/logger.js',
-      'libs/hawtio-core/hawtio-core.js',
+      'libs/hawtio-core/dist/hawtio-core.js',
       'libs/lodash/lodash.js',
       'libs/angular-route/angular-route.js',
       'libs/urijs/src/URI.js',
