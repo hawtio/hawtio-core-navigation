@@ -1005,8 +1005,8 @@ var HawtioMainNav;
 
 
 
-angular.module("hawtio-nav").run(["$templateCache", function($templateCache) {$templateCache.put("templates/main-nav/layoutFull.html","<div ng-view></div>\n\n\n");
-$templateCache.put("templates/main-nav/layoutTest.html","<div>\n  <h1>Test Layout</h1>\n  <div ng-view>\n\n\n  </div>\n</div>\n\n\n");
-$templateCache.put("templates/main-nav/navItem.html","<li ng-class=\"{ active: item.isSelected() }\" ng-hide=\"item.hide()\">\n  <a ng-href=\"{{item.href()}}\" ng-click=\"item.click($event)\" ng-bind-html=\"item.title()\" title=\"{{item.tooltip()}}\"></a>\n</li>\n");
-$templateCache.put("templates/main-nav/subTabHeader.html","<li class=\"header\">\n  <a href=\"\"><strong>{{item.title()}}</strong></a>\n</li>\n");
-$templateCache.put("templates/main-nav/welcome.html","<div ng-controller=\"HawtioNav.WelcomeController\"></div>\n");}]);
+angular.module('hawtio-nav').run(['$templateCache', function($templateCache) {$templateCache.put('templates/main-nav/layoutFull.html','<div ng-view></div>\n\n\n');
+$templateCache.put('templates/main-nav/layoutTest.html','<div>\n  <h1>Test Layout</h1>\n  <div ng-view>\n\n\n  </div>\n</div>\n\n\n');
+$templateCache.put('templates/main-nav/navItem.html','<li ng-class="{ active: item.isSelected() }" ng-hide="item.hide()">\n  <a ng-href="{{item.href()}}" ng-click="item.click($event)" ng-bind-html="item.title()" title="{{item.tooltip()}}"></a>\n</li>\n');
+$templateCache.put('templates/main-nav/subTabHeader.html','<li class="header">\n  <a href=""><strong>{{item.title()}}</strong></a>\n</li>\n');
+$templateCache.put('templates/main-nav/welcome.html','<div ng-controller="HawtioNav.WelcomeController"></div>\n');}]);
