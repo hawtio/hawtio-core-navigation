@@ -16,13 +16,13 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
-      'libs/jquery/dist/jquery.js',
       'libs/angular/angular.js',
+      'libs/angular-route/angular-route.js',
+      'libs/jquery/dist/jquery.js',
       'libs/angular-sanitize/angular-sanitize.js',
       'libs/js-logger/src/logger.js',
       'libs/hawtio-core/dist/hawtio-core.js',
       'libs/lodash/lodash.js',
-      'libs/angular-route/angular-route.js',
       'libs/urijs/src/URI.js',
       // endbower
       'dist/hawtio-core-navigation.js',
@@ -36,7 +36,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'notify'],
+    reporters: ['progress'],
 
 
     // web server port

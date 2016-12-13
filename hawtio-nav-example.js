@@ -125,7 +125,7 @@ var Test;
                       .isValid(function() { return valid })
                       .build());
                       */
-
+      /*
       HawtioNav.add(builder.id('PullRightLink')
                            .title(function() { return 'github'; })
                            .href(function() { return 'http://github.com'; })
@@ -135,6 +135,7 @@ var Test;
                            .linkAttributes({
                              'target': '_blank' 
                            }).build());
+                           */
     }]);
     hawtioPluginLoader.addModule(Test.pluginName);
 })(Test || (Test = {}));

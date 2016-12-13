@@ -1,3 +1,20 @@
-<li ng-class="{ active: item.isSelected() }" ng-hide="item.hide()">
-  <a ng-href="{{item.href()}}" ng-click="item.click($event)" ng-bind-html="item.title()" title="{{item.tooltip()}}"></a>
+<li class="list-group-item" 
+    ng-class="{ active: item.isSelected(), 
+                'secondary-nav-item-pf': item.tabs,
+                'is-hover': item.isHover }" 
+    ng-hide="item.hide()"
+    ng-mouseenter="$ctrl.onHover(item)"
+    ng-mouseleave="$ctrl.onUnHover(item)"
+    data-target="#{{item.id}}-secondary">
+  <a ng-href="{{item.href()}}" ng-click="item.click($event)">
+    <span class="list-group-item-value">
+      <ng-bind-html ng-bind-html="item.title()"></ng-bind-html>
+    </span>
+  </a>
+  <div id="#{{item.id}}-secondary" class="nav-pf-secondary-nav" ng-if="item.tabs">
+    <div class="nav-item-pf-header">
+      <ng-bind-html ng-bind-html="item.title()"></ng-bind-html>
+    </div>
+    <ul class="list-group" item="item" hawtio-sub-tabs></ul>
+  </div>
 </li>

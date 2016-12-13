@@ -4,19 +4,15 @@
     "dist/hawtio-core-navigation.js"
   ],
   "ignore": [
-    ".bowerrc",
-    ".jshintrc",
-    "node_modules",
+    "**/.*",
     "libs",
-    "gulpfile.js",
-    "karma.conf.js",
-    "index.html",
-    "package.json",
+    "node_modules",
     "templates",
-    "hawtio-core-navigation.js",
-    "!dist/hawtio-core-navigation.js",
-    "hawtio-nav-example.js",
-    "test"
+    "test",
+    "package.json",
+    "*.js",
+    "*.yml",
+    "*.md"
   ],
   "dependencies": {
     "angular-route": "~1.5.0",

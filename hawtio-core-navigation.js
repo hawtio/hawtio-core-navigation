@@ -758,6 +758,9 @@ var HawtioMainNav;
   HawtioMainNav._module.directive('hawtioSubTabs', ['HawtioNav', '$templateCache', '$compile', '$location', '$rootScope', function(HawtioNav, $templateCache, $compile, $location, $rootScope) {
     return {
       restrict: 'A',
+      scope: {
+        selectedNav: '=item'
+      },
       link: function(scope, element, attrs) {
 
         scope.$watch(_.debounce(function() {
@@ -772,7 +775,7 @@ var HawtioMainNav;
         scope.$on('hawtio-nav-subtab-redraw', function() {
           log.debug("Redrawing sub-tabs");
           element.empty();
-          var selectedNav = scope.selected
+          var selectedNav = scope.selectedNav;
           if (!selectedNav || !selectedNav.tabs) {
             return;
           }
@@ -1000,6 +1003,30 @@ var HawtioMainNav;
     var registry = HawtioMainNav.createRegistry(window);
     return registry;
   }]);
+
+  HawtioMainNav._module.component('hawtioVerticalNav', {
+    templateUrl: 'templates/main-nav/verticalNav.html',
+    controller: function () {
+      this.showSecondaryNav = false;
+
+      this.onHover = function (item) {
+        if (item.tabs && item.tabs.length > 0) {
+          item.isHover = true;
+          this.showSecondaryNav = true;
+        }
+      }
+
+      this.onUnHover = function (item) {
+        if (this.showSecondaryNav) {
+          item.isHover = false;
+          this.showSecondaryNav = false;
+        }
+      }
+    },
+    bindings: {
+      
+    }
+  });
 
 })(HawtioMainNav || (HawtioMainNav = {}));
 

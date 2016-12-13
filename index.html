@@ -1,63 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html class="layout-pf layout-pf-fixed">
 
-  <head>
-    <title>hawtio-core-navigation</title>
-    <base href='/'>
-    <meta charset="UTF8">
+<head>
+  <title>hawtio-core-navigation</title>
+  <base href='/'>
+  <meta charset="UTF8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- bower:css -->
+  <!-- endbower -->
 
-    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="libs/patternfly/dist/css/patternfly.css" />
-    <link rel="stylesheet" href="libs/patternfly/dist/css/patternfly-additions.css" />
+  <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="libs/patternfly/dist/css/patternfly.css" />
+  <link rel="stylesheet" href="libs/patternfly/dist/css/patternfly-additions.css" />
 
-    <!-- bower:css -->
-    <!-- endbower -->
+  <!-- bower:js -->
+  <script src="libs/angular/angular.js"></script>
+  <script src="libs/angular-route/angular-route.js"></script>
+  <script src="libs/jquery/dist/jquery.js"></script>
+  <script src="libs/angular-sanitize/angular-sanitize.js"></script>
+  <script src="libs/js-logger/src/logger.js"></script>
+  <script src="libs/hawtio-core/dist/hawtio-core.js"></script>
+  <script src="libs/lodash/lodash.js"></script>
+  <script src="libs/urijs/src/URI.js"></script>
+  <!-- endbower -->
 
-    <!-- ES6/ES6 shim -->
-    <!--[if IE 8]>
-    <script src="libs/es5-dom-shim/__COMIPLE/a.ie8.js"></script>
-    <script src="libs/es5-dom-shim/__COMPILE/a.js"></script>
-    <![endif]-->
+  <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="libs/patternfly/dist/js/patternfly.js"></script>
+  <script src="dist/hawtio-core-navigation.js"></script>
+  <script src="dist/hawtio-nav-example.js"></script>
+</head>
 
-    <!-- bower:js -->
-    <script src="libs/jquery/dist/jquery.js"></script>
-    <script src="libs/angular/angular.js"></script>
-    <script src="libs/angular-sanitize/angular-sanitize.js"></script>
-    <script src="libs/js-logger/src/logger.js"></script>
-    <script src="libs/hawtio-core/dist/hawtio-core.js"></script>
-    <script src="libs/lodash/lodash.js"></script>
-    <script src="libs/angular-route/angular-route.js"></script>
-    <script src="libs/urijs/src/URI.js"></script>
-    <!-- endbower -->
-
-    <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="libs/patternfly/dist/js/patternfly.js"></script>
-
-    <style>
-      body {
-        padding-top: 70px;
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-    </style>
-
-  </head>
-
-  <body>
-  <nav class="navbar navbar-fixed-top navbar-default navbar-pf" role="navigation">
-    <div class="container-fluid">
-      <ul class="nav navbar-nav navbar-primary" hawtio-main-nav></ul>
-      <ul class="nav navbar-nav" hawtio-sub-tabs></ul>
-    </div>
+<body>
+  <nav class="navbar navbar-pf-vertical" style="height: 60px">
   </nav>
 
-  <div id="main" class="container-fluid ng-cloak" ng-controller="HawtioNav.ViewController">
+  <hawtio-vertical-nav></hawtio-vertical-nav>
+
+  <div class="container-fluid container-pf-nav-pf-vertical ng-cloak" 
+      ng-controller="HawtioNav.ViewController">
     <div ng-include src="viewPartial"></div>
   </div>
+</body>
 
-    <script src="dist/hawtio-core-navigation.js"></script>
-    <script src="dist/hawtio-nav-example.js"></script>
-
-  </body>
-</html>
+</html> 
