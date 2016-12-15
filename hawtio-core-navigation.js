@@ -762,34 +762,19 @@ var HawtioMainNav;
         selectedNav: '=item'
       },
       link: function(scope, element, attrs) {
-
-        scope.$watch(_.debounce(function() {
-          var selected = HawtioNav.selected();
-          if (scope.selected !== selected) {
-            scope.selected = selected;
-            scope.$broadcast('hawtio-nav-subtab-redraw');
-            scope.$apply();
-          }
-        }, 100, { trailing: true }));
-
-        scope.$on('hawtio-nav-subtab-redraw', function() {
-          log.debug("Redrawing sub-tabs");
-          element.empty();
-          var selectedNav = scope.selectedNav;
-          if (!selectedNav || !selectedNav.tabs) {
-            return;
-          }
-          if (attrs['showHeading']) {
-            var heading = angular.extend({}, selectedNav, {
-              template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
-              drawNavItem($templateCache, $compile, scope, element, heading);
-          }
-          var rankedTabs = sortByRank(selectedNav.tabs);
-          rankedTabs.forEach(function(item) {
-            drawNavItem($templateCache, $compile, scope, element, item);
-          });
+        var selectedNav = scope.selectedNav;
+        if (!selectedNav || !selectedNav.tabs) {
+          return;
+        }
+        if (attrs['showHeading']) {
+          var heading = angular.extend({}, selectedNav, {
+            template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
+            drawNavItem($templateCache, $compile, scope, element, heading);
+        }
+        var rankedTabs = sortByRank(selectedNav.tabs);
+        rankedTabs.forEach(function(item) {
+          drawNavItem($templateCache, $compile, scope, element, item);
         });
-        scope.$broadcast('hawtio-nav-subtab-redraw');
       }
     };
   }]);
