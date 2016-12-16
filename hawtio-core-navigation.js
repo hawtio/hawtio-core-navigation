@@ -759,7 +759,7 @@ var HawtioMainNav;
     return {
       restrict: 'A',
       scope: {
-        item: '='
+        item: '<'
       },
       link: function(scope, element) {
         var rankedTabs = sortByRank(scope.item.tabs);
