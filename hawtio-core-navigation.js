@@ -759,19 +759,10 @@ var HawtioMainNav;
     return {
       restrict: 'A',
       scope: {
-        selectedNav: '=item'
+        item: '='
       },
-      link: function(scope, element, attrs) {
-        var selectedNav = scope.selectedNav;
-        if (!selectedNav || !selectedNav.tabs) {
-          return;
-        }
-        if (attrs['showHeading']) {
-          var heading = angular.extend({}, selectedNav, {
-            template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
-            drawNavItem($templateCache, $compile, scope, element, heading);
-        }
-        var rankedTabs = sortByRank(selectedNav.tabs);
+      link: function(scope, element) {
+        var rankedTabs = sortByRank(scope.item.tabs);
         rankedTabs.forEach(function(item) {
           drawNavItem($templateCache, $compile, scope, element, item);
         });
@@ -993,23 +984,18 @@ var HawtioMainNav;
     templateUrl: 'templates/main-nav/verticalNav.html',
     controller: function () {
       this.showSecondaryNav = false;
-
       this.onHover = function (item) {
         if (item.tabs && item.tabs.length > 0) {
           item.isHover = true;
           this.showSecondaryNav = true;
         }
       }
-
       this.onUnHover = function (item) {
         if (this.showSecondaryNav) {
           item.isHover = false;
           this.showSecondaryNav = false;
         }
       }
-    },
-    bindings: {
-      
     }
   });
 

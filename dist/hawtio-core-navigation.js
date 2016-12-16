@@ -759,19 +759,10 @@ var HawtioMainNav;
     return {
       restrict: 'A',
       scope: {
-        selectedNav: '=item'
+        item: '='
       },
-      link: function(scope, element, attrs) {
-        var selectedNav = scope.selectedNav;
-        if (!selectedNav || !selectedNav.tabs) {
-          return;
-        }
-        if (attrs['showHeading']) {
-          var heading = angular.extend({}, selectedNav, {
-            template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
-            drawNavItem($templateCache, $compile, scope, element, heading);
-        }
-        var rankedTabs = sortByRank(selectedNav.tabs);
+      link: function(scope, element) {
+        var rankedTabs = sortByRank(scope.item.tabs);
         rankedTabs.forEach(function(item) {
           drawNavItem($templateCache, $compile, scope, element, item);
         });
@@ -993,23 +984,18 @@ var HawtioMainNav;
     templateUrl: 'templates/main-nav/verticalNav.html',
     controller: function () {
       this.showSecondaryNav = false;
-
       this.onHover = function (item) {
         if (item.tabs && item.tabs.length > 0) {
           item.isHover = true;
           this.showSecondaryNav = true;
         }
       }
-
       this.onUnHover = function (item) {
         if (this.showSecondaryNav) {
           item.isHover = false;
           this.showSecondaryNav = false;
         }
       }
-    },
-    bindings: {
-      
     }
   });
 
@@ -1019,7 +1005,7 @@ var HawtioMainNav;
 
 angular.module('hawtio-nav').run(['$templateCache', function($templateCache) {$templateCache.put('templates/main-nav/layoutFull.html','<div ng-view></div>\n\n\n');
 $templateCache.put('templates/main-nav/layoutTest.html','<div>\n  <h1>Test Layout</h1>\n  <div ng-view>\n\n\n  </div>\n</div>\n\n\n');
-$templateCache.put('templates/main-nav/navItem.html','<li class="list-group-item" \n    ng-class="{ active: item.isSelected(), \n                \'secondary-nav-item-pf\': item.tabs,\n                \'is-hover\': item.isHover }" \n    ng-hide="item.hide()"\n    ng-mouseenter="$ctrl.onHover(item)"\n    ng-mouseleave="$ctrl.onUnHover(item)"\n    data-target="#{{item.id}}-secondary">\n  <a ng-href="{{item.href()}}" ng-click="item.click($event)">\n    <span class="list-group-item-value">\n      <ng-bind-html ng-bind-html="item.title()"></ng-bind-html>\n    </span>\n  </a>\n  <div id="#{{item.id}}-secondary" class="nav-pf-secondary-nav" ng-if="item.tabs">\n    <div class="nav-item-pf-header">\n      <ng-bind-html ng-bind-html="item.title()"></ng-bind-html>\n    </div>\n    <ul class="list-group" item="item" hawtio-sub-tabs></ul>\n  </div>\n</li>\n');
+$templateCache.put('templates/main-nav/navItem.html','<li class="list-group-item" \n    ng-class="{ active: item.isSelected(), \n                \'secondary-nav-item-pf\': item.tabs,\n                \'is-hover\': item.isHover }" \n    ng-if="item.isValid === undefined || item.isValid()"\n    ng-hide="item.hide()"\n    ng-mouseenter="$ctrl.onHover(item)"\n    ng-mouseleave="$ctrl.onUnHover(item)"\n    data-target="#{{item.id}}-secondary">\n  <a ng-href="{{item.href()}}" ng-click="item.click($event)">\n    <span class="list-group-item-value">\n      <ng-bind-html ng-bind-html="item.title()"></ng-bind-html>\n    </span>\n  </a>\n  <div id="#{{item.id}}-secondary" class="nav-pf-secondary-nav" ng-if="item.tabs">\n    <div class="nav-item-pf-header">\n      <ng-bind-html ng-bind-html="item.title()"></ng-bind-html>\n    </div>\n    <ul class="list-group" item="item" hawtio-sub-tabs></ul>\n  </div>\n</li>\n');
 $templateCache.put('templates/main-nav/subTabHeader.html','<li class="header">\n  <a href=""><strong>{{item.title()}}</strong></a>\n</li>\n');
 $templateCache.put('templates/main-nav/verticalNav.html','<div class="nav-pf-vertical nav-pf-vertical-with-sub-menus nav-pf-persistent-secondary" \n     ng-class="{\'hover-secondary-nav-pf\': $ctrl.showSecondaryNav}">\n  <ul class="list-group" hawtio-main-nav></ul>\n</div>');
 $templateCache.put('templates/main-nav/welcome.html','<div ng-controller="HawtioNav.WelcomeController"></div>\n');}]);

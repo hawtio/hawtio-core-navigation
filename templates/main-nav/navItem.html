@@ -2,6 +2,7 @@
     ng-class="{ active: item.isSelected(), 
                 'secondary-nav-item-pf': item.tabs,
                 'is-hover': item.isHover }" 
+    ng-if="item.isValid === undefined || item.isValid()"
     ng-hide="item.hide()"
     ng-mouseenter="$ctrl.onHover(item)"
     ng-mouseleave="$ctrl.onUnHover(item)"
