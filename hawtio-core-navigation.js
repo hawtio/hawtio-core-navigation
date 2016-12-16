@@ -755,7 +755,7 @@ var HawtioMainNav;
     }
   }
 
-  HawtioMainNav._module.directive('hawtioSubTabs', ['HawtioNav', '$templateCache', '$compile', '$location', '$rootScope', function(HawtioNav, $templateCache, $compile, $location, $rootScope) {
+  HawtioMainNav._module.directive('hawtioSubTabs', ['$templateCache', '$compile', function($templateCache, $compile) {
     return {
       restrict: 'A',
       scope: {
