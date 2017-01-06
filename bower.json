@@ -4,28 +4,23 @@
     "dist/hawtio-core-navigation.js"
   ],
   "ignore": [
-    ".bowerrc",
-    ".jshintrc",
-    "node_modules",
+    "**/.*",
     "libs",
-    "gulpfile.js",
-    "karma.conf.js",
-    "index.html",
-    "package.json",
+    "node_modules",
     "templates",
-    "hawtio-core-navigation.js",
-    "!dist/hawtio-core-navigation.js",
-    "hawtio-nav-example.js",
-    "test"
+    "test",
+    "package.json",
+    "*.js",
+    "*.yml",
+    "*.md"
   ],
   "dependencies": {
-    "hawtio-core": "~2.0.0",
-    "lodash": ">=3.2.0 <4.0.0",
     "angular-route": "~1.5.0",
-    "urijs": "<2.0.0"
+    "hawtio-core": "~3.0.0",
+    "lodash": "~3.10.0",
+    "urijs": "~1.18.0"
   },
   "devDependencies": {
-    "bootstrap": "~3.3.6",
-    "patternfly": "~2.7.0"
+    "patternfly": "~3.15.0"
   }
 }

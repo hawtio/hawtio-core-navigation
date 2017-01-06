@@ -755,38 +755,17 @@ var HawtioMainNav;
     }
   }
 
-  HawtioMainNav._module.directive('hawtioSubTabs', ['HawtioNav', '$templateCache', '$compile', '$location', '$rootScope', function(HawtioNav, $templateCache, $compile, $location, $rootScope) {
+  HawtioMainNav._module.directive('hawtioSubTabs', ['$templateCache', '$compile', function($templateCache, $compile) {
     return {
       restrict: 'A',
-      link: function(scope, element, attrs) {
-
-        scope.$watch(_.debounce(function() {
-          var selected = HawtioNav.selected();
-          if (scope.selected !== selected) {
-            scope.selected = selected;
-            scope.$broadcast('hawtio-nav-subtab-redraw');
-            scope.$apply();
-          }
-        }, 100, { trailing: true }));
-
-        scope.$on('hawtio-nav-subtab-redraw', function() {
-          log.debug("Redrawing sub-tabs");
-          element.empty();
-          var selectedNav = scope.selected
-          if (!selectedNav || !selectedNav.tabs) {
-            return;
-          }
-          if (attrs['showHeading']) {
-            var heading = angular.extend({}, selectedNav, {
-              template: function() { return $templateCache.get('templates/main-nav/subTabHeader.html'); }});
-              drawNavItem($templateCache, $compile, scope, element, heading);
-          }
-          var rankedTabs = sortByRank(selectedNav.tabs);
-          rankedTabs.forEach(function(item) {
-            drawNavItem($templateCache, $compile, scope, element, item);
-          });
+      scope: {
+        item: '<'
+      },
+      link: function(scope, element) {
+        var rankedTabs = sortByRank(scope.item.tabs);
+        rankedTabs.forEach(function(item) {
+          drawNavItem($templateCache, $compile, scope, element, item);
         });
-        scope.$broadcast('hawtio-nav-subtab-redraw');
       }
     };
   }]);
@@ -1000,6 +979,25 @@ var HawtioMainNav;
     var registry = HawtioMainNav.createRegistry(window);
     return registry;
   }]);
+
+  HawtioMainNav._module.component('hawtioVerticalNav', {
+    templateUrl: 'templates/main-nav/verticalNav.html',
+    controller: function () {
+      this.showSecondaryNav = false;
+      this.onHover = function (item) {
+        if (item.tabs && item.tabs.length > 0) {
+          item.isHover = true;
+          this.showSecondaryNav = true;
+        }
+      }
+      this.onUnHover = function (item) {
+        if (this.showSecondaryNav) {
+          item.isHover = false;
+          this.showSecondaryNav = false;
+        }
+      }
+    }
+  });
 
 })(HawtioMainNav || (HawtioMainNav = {}));
 
