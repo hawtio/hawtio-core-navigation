@@ -1,6 +1,7 @@
 {
   "name": "hawtio-core-navigation",
   "main": [
+    "dist/hawtio-core-navigation.css",
     "dist/hawtio-core-navigation.js"
   ],
   "ignore": [

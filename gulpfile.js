@@ -34,8 +34,13 @@ gulp.task('templates', function() {
 });
 
 gulp.task('concat', ['templates'], function() {
-  return gulp.src(['./hawtio-core-navigation.js', './templates.js'])
+  return gulp.src(['./src/hawtio-core-navigation.js', './templates.js'])
     .pipe(plugins.concat('hawtio-core-navigation.js'))
+    .pipe(gulp.dest(config.dist));
+});
+
+gulp.task('css', function() {
+  return gulp.src(['./src/hawtio-core-navigation.css'])
     .pipe(gulp.dest(config.dist));
 });
 
@@ -54,7 +59,7 @@ gulp.task('example-templates', function() {
 });
 
 gulp.task('example-concat', ['example-templates'], function() {
-  return gulp.src(['./hawtio-nav-example.js', './example-templates.js'])
+  return gulp.src(['./src/hawtio-nav-example.js', './example-templates.js'])
     .pipe(plugins.concat('hawtio-nav-example.js'))
     .pipe(gulp.dest(config.dist));
 });
@@ -64,10 +69,10 @@ gulp.task('example-clean', ['example-concat'], function() {
 });
 
 gulp.task('watch', ['build', 'build-example'], function() {
-  plugins.watch(['hawtio-core-navigation.js', 'templates/**/*.html'], function() {
+  plugins.watch(['src/hawtio-core-navigation.*', 'templates/**/*.html'], function() {
     gulp.start('build');
   });
-  plugins.watch(['hawtio-nav-example.js', 'test/html/*.html'], function() {
+  plugins.watch(['src/hawtio-nav-example.js', 'test/html/*.html'], function() {
     gulp.start('build-example');
   });
 });
@@ -95,6 +100,6 @@ gulp.task('reload', function() {
     .pipe(plugins.connect.reload());
 });
 
-gulp.task('build', ['templates', 'concat', 'clean']);
+gulp.task('build', ['templates', 'concat', 'css', 'bower', 'clean']);
 gulp.task('build-example', ['example-templates', 'example-concat', 'example-clean']);
 gulp.task('default', ['build', 'build-example', 'watch', 'connect', 'test']);
