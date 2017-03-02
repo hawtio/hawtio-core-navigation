@@ -5,6 +5,7 @@ dependencies:
     - bower install
   override:
     - gulp build build-example
+
 test:
   override:
     - echo yes
