@@ -793,9 +793,7 @@ var HawtioMainNav;
               }
               uri.search(function(search) {
                 _.merge(search, uri.query(true));
-                if (!search['main-tab']) {
-                  search['main-tab'] = item.id;
-                }
+                search['main-tab'] = item.id;
                 search['sub-tab'] = subItem.id;
               });
               return uri.toString();
