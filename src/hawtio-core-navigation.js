@@ -673,9 +673,8 @@ var HawtioMainNav;
             return true;
           }
           if (item.tabs) {
-            var answer = _.any(item.tabs, function(subTab) {
-              var answer = subTab.isSelected();
-              return answer;
+            var answer = _.some(item.tabs, function(subTab) {
+              return subTab.isSelected();
             });
             if (answer) {
               return true;
