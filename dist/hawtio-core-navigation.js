@@ -521,7 +521,7 @@ var HawtioMainNav;
           try {
             var obj = angular.fromJson(candidate);
             if (_.isObject(obj)) {
-              _.mergeWith(obj, query, function(a, b) {
+              _.merge(obj, query, function(a, b) {
                 if (a) {
                   if (a === b) {
                     answer = viewRegistry[candidate];

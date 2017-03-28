@@ -140,6 +140,6 @@ var Test;
     hawtioPluginLoader.addModule(Test.pluginName);
 })(Test || (Test = {}));
 
-angular.module("test").run(["$templateCache", function($templateCache) {$templateCache.put("test/html/page1.html","<div class=\"row\">\n  <div class=\"col-md-12\">\n    <h1>Page 1</h1>\n    <p>foo</p>\n  </div>\n</div>\n");
-$templateCache.put("test/html/page2.html","<div class=\"row\">\n  <div class=\"col-md-12\">\n    <h1>Page 2</h1>\n  </div>\n</div>\n");
-$templateCache.put("test/html/page3.html","<div class=\"row\">\n  <div class=\"col-md-12\">\n    <h1>Page 3</h1>\n  </div>\n</div>\n");}]);
+angular.module('test').run(['$templateCache', function($templateCache) {$templateCache.put('test/html/page1.html','<div class="row">\n  <div class="col-md-12">\n    <h1>Page 1</h1>\n    <p>foo</p>\n  </div>\n</div>\n');
+$templateCache.put('test/html/page2.html','<div class="row">\n  <div class="col-md-12">\n    <h1>Page 2</h1>\n  </div>\n</div>\n');
+$templateCache.put('test/html/page3.html','<div class="row">\n  <div class="col-md-12">\n    <h1>Page 3</h1>\n  </div>\n</div>\n');}]);

@@ -16,13 +16,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
-      'libs/jquery/dist/jquery.js',
       'libs/angular/angular.js',
       'libs/angular-route/angular-route.js',
+      'libs/jquery/dist/jquery.js',
       'libs/angular-sanitize/angular-sanitize.js',
       'libs/js-logger/src/logger.js',
       'libs/hawtio-core/dist/hawtio-core.js',
       'libs/urijs/src/URI.js',
+      'libs/lodash/lodash.js',
       'libs/angular-animate/angular-animate.js',
       'libs/angular-bootstrap/ui-bootstrap-tpls.js',
       'libs/jquery-ui/jquery-ui.js',
@@ -42,7 +43,6 @@ module.exports = function(config) {
       'libs/angular-datatables/dist/plugins/select/angular-datatables.select.js',
       'libs/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
       'libs/datatables.net-select/js/dataTables.select.js',
-      'libs/lodash/lodash.js',
       'libs/bootstrap/dist/js/bootstrap.js',
       'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
       'libs/bootstrap-select/dist/js/bootstrap-select.js',
