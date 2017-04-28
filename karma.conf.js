@@ -58,7 +58,7 @@ module.exports = function(config) {
       'libs/moment/moment.js',
       'libs/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
       'libs/patternfly-bootstrap-combobox/js/bootstrap-combobox.js',
-      'libs/patternfly-bootstrap-treeview/dist/bootstrap-treeview.min.js',
+      'libs/patternfly-bootstrap-treeview/dist/bootstrap-treeview.js',
       'libs/patternfly/dist/js/patternfly.js',
       'libs/angular-patternfly/dist/angular-patternfly.js',
       // endbower
