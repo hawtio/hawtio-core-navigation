@@ -1,6 +1,6 @@
 {
   "name": "@hawtio/core-navigation",
-  "version": "3.0.10",
+  "version": "3.0.9",
   "main": "dist/hawtio-core-navigation.js",
   "repository": {
     "url": "https://github.com/hawtio/hawtio-core-navigation",
