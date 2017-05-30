@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-    wiredep = require('wiredep').stream,
     karma = require('karma').server,
     del = require('del'),
     argv = require('yargs').argv,
@@ -10,18 +9,6 @@ var plugins = gulpLoadPlugins({ lazy: false });
 var config = {
   dist: argv.out || './dist/'
 }
-
-gulp.task('bower', function() {
-  gulp.src('index.html')
-    .pipe(wiredep({
-    }))
-    .pipe(gulp.dest('.'));
-  gulp.src('karma.conf.js')
-    .pipe(wiredep({
-      exclude: 'libs/webcomponentsjs/webcomponents.js'
-    }))
-    .pipe(gulp.dest('.'));
-});
 
 gulp.task('templates', function() {
   return gulp.src(['./templates/**/*.html'])
@@ -100,6 +87,6 @@ gulp.task('reload', function() {
     .pipe(plugins.connect.reload());
 });
 
-gulp.task('build', ['templates', 'concat', 'bower', 'clean']);
+gulp.task('build', ['templates', 'concat', 'clean']);
 gulp.task('build-example', ['example-templates', 'example-concat', 'example-clean']);
 gulp.task('default', ['build', 'build-example', 'watch', 'connect', 'test']);

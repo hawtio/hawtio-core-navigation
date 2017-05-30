@@ -1,13 +1,19 @@
 {
   "name": "hawtio-core-navigation",
   "version": "3.0.0",
-  "scripts": {
-    "start": "gulp",
-    "build": "gulp build"
+  "main": "dist/hawtio-core-navigation.js",
+  "repository": {
+    "url": "https://github.com/hawtio/hawtio-core-navigation",
+    "type": "git"
   },
-  "dependencies": {},
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@hawtio/core": "~3.0.0",
+    "angular-route": "~1.5.0",
+    "urijs": "~1.18.0",
+    "angular-patternfly": "^4.0.0"
+  },
   "devDependencies": {
-    "bower": "^1.0.0",
     "del": "^2.0.0",
     "gulp": "^3.0.0",
     "gulp-angular-templatecache": "^2.0.0",
@@ -15,7 +21,6 @@
     "gulp-concat-sourcemap": "^1.0.0",
     "gulp-connect": "^5.0.0",
     "gulp-load-plugins": "^1.0.0",
-    "gulp-notify": "^2.0.0",
     "gulp-sourcemaps": "^1.0.0",
     "gulp-typescript": "^3.0.0",
     "gulp-watch": "^3.0.0",
@@ -29,7 +34,10 @@
     "through2": "^2.0.0",
     "typescript": "^2.0.0",
     "which": "^1.0.0",
-    "wiredep": "^4.0.0",
     "yargs": "^6.0.0"
+  },
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build"
   }
 }
