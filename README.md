@@ -5,7 +5,7 @@ A core plugin that provides the main navigation bar and an API to manipulate the
 [![Circle CI](https://circleci.com/gh/hawtio/hawtio-core-navigation.svg?style=svg)](https://circleci.com/gh/hawtio/hawtio-core-navigation)
 
 ### Basic usage
-* `bower install --save hawtio-core-navigation`
+* `npm install @hawtio/core-navigation`
 
 * In your hawtio plugin you can configure your routes and the navigation bar in one go:
 
@@ -108,4 +108,4 @@ A core plugin that provides the main navigation bar and an API to manipulate the
   }]);
 ```
 
-  see [index.html](https://github.com/hawtio/hawtio-core-navigation/blob/master/index.html) and [hawtio-nav-example.js](https://github.com/hawtio/hawtio-core-navigation/blob/master/hawtio-nav-example.js) for more details and examples.
+  see [index.html](https://github.com/hawtio/hawtio-core-navigation/blob/master/index.html) and [hawtio-nav-example.js](https://github.com/hawtio/hawtio-core-navigation/blob/master/src/hawtio-nav-example.js) for more details and examples.
