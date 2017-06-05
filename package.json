@@ -1,35 +1,34 @@
 {
-  "name": "hawtio-core-navigation",
+  "name": "@hawtio/core-navigation",
   "version": "3.0.0",
+  "main": "dist/hawtio-core-navigation.js",
   "scripts": {
     "start": "gulp",
     "build": "gulp build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@hawtio/core": "^3.0.4",
+    "angular-patternfly": "^4.0.0",
+    "angular-route": "^1.6.4",
+    "lodash": "^4.17.4",
+    "urijs": "^1.18.10"
+  },
   "devDependencies": {
-    "bower": "^1.0.0",
     "del": "^2.0.0",
     "gulp": "^3.0.0",
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-concat": "^2.0.0",
-    "gulp-concat-sourcemap": "^1.0.0",
     "gulp-connect": "^5.0.0",
-    "gulp-load-plugins": "^1.0.0",
-    "gulp-notify": "^2.0.0",
-    "gulp-sourcemaps": "^1.0.0",
-    "gulp-typescript": "^3.0.0",
-    "gulp-watch": "^3.0.0",
     "jasmine-core": "^2.0.0",
     "karma": "^1.0.0",
     "karma-jasmine": "^1.0.0",
     "karma-notify-reporter": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.0",
-    "karma-typescript-preprocessor": "~0.3.0",
-    "require-dir": "~0.3.0",
-    "through2": "^2.0.0",
-    "typescript": "^2.0.0",
-    "which": "^1.0.0",
-    "wiredep": "^4.0.0",
-    "yargs": "^6.0.0"
-  }
+    "karma-typescript-preprocessor": "~0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hawtio/hawtio-core-navigation"
+  },
+  "license": "Apache-2.0"
 }

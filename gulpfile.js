@@ -1,31 +1,13 @@
-var gulp = require('gulp'),
-    wiredep = require('wiredep').stream,
-    karma = require('karma').server,
-    del = require('del'),
-    argv = require('yargs').argv,
-    gulpLoadPlugins = require('gulp-load-plugins');
-
-var plugins = gulpLoadPlugins({ lazy: false });
-
-var config = {
-  dist: argv.out || './dist/'
-}
-
-gulp.task('bower', function() {
-  gulp.src('index.html')
-    .pipe(wiredep({
-    }))
-    .pipe(gulp.dest('.'));
-  gulp.src('karma.conf.js')
-    .pipe(wiredep({
-      exclude: 'libs/webcomponentsjs/webcomponents.js'
-    }))
-    .pipe(gulp.dest('.'));
-});
+var gulp = require('gulp');
+var Server = require('karma').Server;
+var del = require('del');
+var templateCache = require('gulp-angular-templatecache');
+var concat = require('gulp-concat');
+var connect = require('gulp-connect');
 
 gulp.task('templates', function() {
   return gulp.src(['./templates/**/*.html'])
-    .pipe(plugins.angularTemplatecache({
+    .pipe(templateCache({
       filename: 'templates.js',
       root: 'templates/',
       module: 'hawtio-nav'
@@ -35,14 +17,9 @@ gulp.task('templates', function() {
 
 gulp.task('concat', ['templates'], function() {
   return gulp.src(['./src/hawtio-core-navigation.js', './templates.js'])
-    .pipe(plugins.concat('hawtio-core-navigation.js'))
-    .pipe(gulp.dest(config.dist));
+    .pipe(concat('hawtio-core-navigation.js'))
+    .pipe(gulp.dest('./dist/'));
 });
-
-// gulp.task('css', function() {
-//   return gulp.src(['./src/hawtio-core-navigation.css'])
-//     .pipe(gulp.dest(config.dist));
-// });
 
 gulp.task('clean', ['concat'], function() {
   return del('./templates.js');
@@ -50,7 +27,7 @@ gulp.task('clean', ['concat'], function() {
 
 gulp.task('example-templates', function() {
   return gulp.src('./test/html/*.html')
-    .pipe(plugins.angularTemplatecache({
+    .pipe(templateCache({
       filename: 'example-templates.js',
       root: 'test/html',
       module: 'test'
@@ -60,8 +37,8 @@ gulp.task('example-templates', function() {
 
 gulp.task('example-concat', ['example-templates'], function() {
   return gulp.src(['./src/hawtio-nav-example.js', './example-templates.js'])
-    .pipe(plugins.concat('hawtio-nav-example.js'))
-    .pipe(gulp.dest(config.dist));
+    .pipe(concat('hawtio-nav-example.js'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('example-clean', ['example-concat'], function() {
@@ -69,19 +46,13 @@ gulp.task('example-clean', ['example-concat'], function() {
 });
 
 gulp.task('watch', ['build', 'build-example'], function() {
-  plugins.watch(['src/hawtio-core-navigation.*', 'templates/**/*.html'], function() {
-    gulp.start('build');
-  });
-  plugins.watch(['src/hawtio-nav-example.js', 'test/html/*.html'], function() {
-    gulp.start('build-example');
-  });
+  gulp.watch(['src/hawtio-core-navigation.*', 'templates/**/*.html'], ['build']);
+  gulp.watch(['src/hawtio-nav-example.js', 'test/html/*.html'], ['build-example']);
 });
 
 gulp.task('connect', function() {
-  plugins.watch(['index.html', 'dist/hawtio-nav-example.js', 'dist/hawtio-core-navigation.js'], function() {
-    gulp.start('reload');
-  });
-  plugins.connect.server({
+  gulp.watch(['index.html', 'dist/hawtio-nav-example.js', 'dist/hawtio-core-navigation.js'], ['reload']);
+  connect.server({
     root: '.',
     livereload: true,
     port: 2772,
@@ -89,17 +60,17 @@ gulp.task('connect', function() {
   });
 });
 
-gulp.task('test', function() {
-  karma.start({
+gulp.task('test', function(done) {
+  new Server({
     configFile: __dirname + '/karma.conf.js'
-  });
+  }, done).start();
 });
 
 gulp.task('reload', function() {
   gulp.src('.')
-    .pipe(plugins.connect.reload());
+    .pipe(connect.reload());
 });
 
-gulp.task('build', ['templates', 'concat', 'bower', 'clean']);
+gulp.task('build', ['templates', 'concat', 'clean']);
 gulp.task('build-example', ['example-templates', 'example-concat', 'example-clean']);
 gulp.task('default', ['build', 'build-example', 'watch', 'connect', 'test']);
