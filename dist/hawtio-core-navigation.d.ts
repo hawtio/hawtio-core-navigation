@@ -1,4 +1,5 @@
-/// <reference path="angular-route.d.ts"/>
+/// <reference types="angular-route"/>
+
 declare module HawtioMainNav {
 
     var pluginName: string;
