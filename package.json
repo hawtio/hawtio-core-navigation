@@ -1,6 +1,6 @@
 {
   "name": "@hawtio/core-navigation",
-  "version": "3.0.13",
+  "version": "3.0.14",
   "main": "./dist/hawtio-core-navigation.js",
   "types": "./dist/hawtio-core-navigation.d.ts",
   "scripts": {
