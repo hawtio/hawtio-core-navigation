@@ -56,7 +56,7 @@ gulp.task('watch', ['build', 'build-example'], function() {
 });
 
 gulp.task('connect', function() {
-  gulp.watch(['index.html', 'dist/hawtio-nav-example.js', 'dist/hawtio-core-navigation.js'], ['reload']);
+  gulp.watch(['index.html', 'dist/*'], ['reload']);
   connect.server({
     root: '.',
     livereload: true,
