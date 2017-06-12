@@ -1,11 +1,17 @@
+machine:
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
+branches:
+  ignore:
+    - gh-pages
+
 dependencies:
-  pre:
-    - npm install -g bower gulp
-    - npm install
-    - bower install
   override:
-    - gulp build build-example
+    - yarn run install:dev
+  cache_directories:
+    - ~/.cache/yarn
 
 test:
   override:
-    - echo yes
+    - yarn test

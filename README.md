@@ -1,13 +1,52 @@
-## hawtio-core-navigation
+# hawtio-core-navigation
 
 A core plugin that provides the main navigation bar and an API to manipulate the navigation bar for the **[hawtio](http://hawt.io)** web console.
 
 [![Circle CI](https://circleci.com/gh/hawtio/hawtio-core-navigation.svg?style=svg)](https://circleci.com/gh/hawtio/hawtio-core-navigation)
 
-### Basic usage
-* `npm install @hawtio/core-navigation`
+## Installation
 
-* In your hawtio plugin you can configure your routes and the navigation bar in one go:
+```
+yarn add @hawtio/core-navigation
+```
+
+## Set up development environment
+
+### Clone the repository
+
+```
+git clone https://github.com/hawtio/hawtio-core-navigation
+cd hawtio-core-navigation
+```
+
+### Install development tools
+
+* [Node.js](http://nodejs.org)
+* [Yarn](https://yarnpkg.com)
+* [gulp](http://gulpjs.com/)
+
+### Install project dependencies
+
+```
+yarn install:dev
+```
+
+### Run the web application
+
+```
+gulp
+```
+
+### Change the default proxy port
+
+To proxy to a local JVM running on a different port than `8282` specify the `--port` CLI arguement to gulp:
+```
+gulp --port=8181
+```
+
+## Usage
+
+In your hawtio plugin you can configure your routes and the navigation bar in one go:
 
 ```javascript
   var tab = undefined;
@@ -32,7 +71,7 @@ A core plugin that provides the main navigation bar and an API to manipulate the
   hawtioPluginLoader.addModule("MyAwesomePlugin");
 ```
 
-* You can also configure your routes separately for more control and configure the tabs in your module's run method:
+You can also configure your routes separately for more control and configure the tabs in your module's run method:
 
 ```javascript
   var module = angular.module("MyAwesomePlugin", []);
@@ -66,7 +105,7 @@ A core plugin that provides the main navigation bar and an API to manipulate the
   }]);
 ```
 
-* Tabs can also influence what the initial page/route will be by adding a 'defaultPage' attribute, for example:
+Tabs can also influence what the initial page/route will be by adding a 'defaultPage' attribute, for example:
 
 ```javascript
   var module = angular.module("MyAwesomePlugin", []);
@@ -108,4 +147,4 @@ A core plugin that provides the main navigation bar and an API to manipulate the
   }]);
 ```
 
-  see [index.html](https://github.com/hawtio/hawtio-core-navigation/blob/master/index.html) and [hawtio-nav-example.js](https://github.com/hawtio/hawtio-core-navigation/blob/master/src/hawtio-nav-example.js) for more details and examples.
+See [index.html](https://github.com/hawtio/hawtio-core-navigation/blob/master/index.html) and [hawtio-nav-example.js](https://github.com/hawtio/hawtio-core-navigation/blob/master/src/hawtio-nav-example.js) for more details and examples.
