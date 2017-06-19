@@ -7,6 +7,9 @@ branches:
     - gh-pages
 
 dependencies:
+  pre:
+    - rm -rf ~/.yarn
+    - npm install --global yarn
   override:
     - yarn run install:dev
   cache_directories:
