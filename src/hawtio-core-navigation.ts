@@ -7,7 +7,7 @@
 // Polyfill custom event if necessary since we kinda need it
 // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
 (function () {
-  if (typeof window.CustomEvent !== "function") {
+  if (typeof window['CustomEvent'] !== "function") {
     function CustomEvent ( event, params ) {
       params = params || { bubbles: false, cancelable: false, detail: undefined };
       var evt = document.createEvent( 'CustomEvent' );
@@ -15,8 +15,8 @@
       return evt;
     }
 
-    CustomEvent.prototype = window.Event.prototype;
-    window.CustomEvent = CustomEvent;
+    CustomEvent.prototype = window['Event'].prototype;
+    window['CustomEvent'] = CustomEvent;
   }
 })();
 
@@ -142,16 +142,16 @@ var HawtioMainNav;
     };
     RegistryImpl.prototype.selected = function() {
       var valid = _.filter(this.items, function(item) {
-        if (!item.isValid) {
+        if (!item['isValid']) {
           return true;
         }
-        return item.isValid()
+        return item['isValid']()
       });
       var answer = _.find(valid, function(item) {
-        if (!item.isSelected) {
+        if (!item['isSelected']) {
           return false;
         }
-        return item.isSelected();
+        return item['isSelected']();
       });
       return answer;
     };
@@ -223,7 +223,7 @@ var HawtioMainNav;
         id: ''
       };
     }
-    NavItemBuilderImpl.join = function() {
+    NavItemBuilderImpl['join'] = function() {
       var paths = [];
       for (var _i = 0; _i < arguments.length; _i++) {
         paths[_i - 0] = arguments[_i];
@@ -332,24 +332,24 @@ var HawtioMainNav;
         },
         href: function() {
           if (parent.href) {
-            return NavItemBuilderImpl.join(parent.href(), path);
+            return NavItemBuilderImpl['join'](parent.href(), path);
           }
           return path;
         }
       };
       if (!_.isUndefined(page)) {
-        tab.page = function() {
+        tab['page'] = function() {
           return page;
         };
       }
       if (!_.isUndefined(rank)) {
-        tab.rank = rank;
+        tab['rank'] = rank;
       }
       if (!_.isUndefined(reload)) {
-        tab.reload = reload;
+        tab['reload'] = reload;
       }
       if (!_.isUndefined(isValid)) {
-        tab.isValid = isValid;
+        tab['isValid'] = isValid;
       }
       this.self.tabs.push(tab);
       return this;
@@ -401,7 +401,7 @@ var HawtioMainNav;
     function gotoFirstAvailableNav() {
       var candidates = [];
       nav.iterate(function(item) {
-        var isValid = item.isValid || function() { return true; };
+        var isValid = item['isValid'] || function() { return true; };
         var show = item.show || function() { return true; };
         if (isValid() && show()) {
           candidates.push(item);
@@ -452,10 +452,10 @@ var HawtioMainNav;
           log.debug("No welcome pages, going to first available nav");
           gotoFirstAvailableNav();
         }
-        var sortedPages = _.sortBy(welcome.pages, function(page) { return page.rank; });
+        var sortedPages = _.sortBy(welcome.pages, function(page) { return page['rank']; });
         var page = _.find(sortedPages, function(page) {
           if ('isValid' in page) {
-            return page.isValid();
+            return page['isValid']();
           }
           return true;
         });
@@ -642,8 +642,8 @@ var HawtioMainNav;
     if (!('isValid' in item)) {
       return true;
     }
-    if (_.isFunction(item.isValid)) {
-      return item.isValid();
+    if (_.isFunction(item['isValid'])) {
+      return item['isValid']();
     }
     return false;
   }
@@ -652,12 +652,12 @@ var HawtioMainNav;
   var tmpLink = $('<a>');
   function addIsSelected($location, item) {
     if (!('isSelected' in item) && 'href' in item) {
-      item.isSelected = function() {
+      item['isSelected'] = function() {
         // item.href() might be relative, in which
         // case we should let the browser resolve
         // what the full path should be
         tmpLink.attr("href", item.href());
-        var href = new URI(tmpLink[0].href);
+        var href = new URI(tmpLink[0]['href']);
         var itemPath = trimLeading(href.path(), '/');
         if (itemPath === '') {
           // log.debug("nav item: ", item.id, " returning empty href, can't be selected");
@@ -674,7 +674,7 @@ var HawtioMainNav;
           }
           if (item.tabs) {
             var answer = _.some(item.tabs, function(subTab) {
-              return subTab.isSelected();
+              return subTab['isSelected']();
             });
             if (answer) {
               return true;
@@ -740,7 +740,7 @@ var HawtioMainNav;
       return;
     }
     var index = _.findIndex(collection, function(i) {
-      if ('rank' in i && item.rank > i.rank) {
+      if ('rank' in i && item.rank > i['rank']) {
         return true;
       }
     });
@@ -908,26 +908,26 @@ var HawtioMainNav;
     this.create = function() {
       return HawtioMainNav.createBuilder();
     };
-    this.join = NavItemBuilderImpl.join;
+    this.join = NavItemBuilderImpl['join'];
 
     function setRoute($routeProvider, tab) {
-      log.debug("Setting route: ", tab.href(), " to template URL: ", tab.page());
+      log.debug("Setting route: ", tab.href(), " to template URL: ", tab['page']());
       var config = {
-        templateUrl: tab.page()
+        templateUrl: tab['page']()
       };
-      if (!_.isUndefined(tab.reload)) {
-        config.reloadOnSearch = tab.reload;
+      if (!_.isUndefined(tab['reload'])) {
+        config['reloadOnSearch'] = tab['reload'];
       }
       $routeProvider.when(tab.href(), config);
     }
     this.configureRouting = function($routeProvider, tab) {
-      if (_.isUndefined(tab.page)) {
+      if (_.isUndefined(tab['page'])) {
         if (tab.tabs) {
           var target = _.first(tab.tabs)['href'];
           if (target) {
             log.debug("Setting route: ", tab.href(), " to redirect to ", target());
             $routeProvider.when(tab.href(), {
-              reloadOnSearch: tab.reload,
+              reloadOnSearch: tab['reload'],
               redirectTo: target()
             });
           }
