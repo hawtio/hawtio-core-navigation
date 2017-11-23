@@ -1,3 +1,7 @@
+# DEPRECATED
+
+**This project has been moved to [hawtio-core](https://github.com/hawtio/hawtio-core)**
+
 # hawtio-core-navigation
 
 A core plugin that provides the main navigation bar and an API to manipulate the navigation bar for the **[hawtio](http://hawt.io)** web console.
